@@ -1,0 +1,55 @@
+
+#login {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  &>h3 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: #EF6F6C;
+  }
+  &>div {
+    padding: 0;
+    margin: 3px;
+    width: 75%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .input-group {
+    width: 66%;
+    &>span {
+      width: 6%;
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      line-height: 25px;
+    }
+
+    &>input {
+      height: 25px;
+      width: 94%;
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+    }
+  }
+
+  #register {
+    display: flex;
+    justify-content: center;
+  }
+
+  #controllers {
+    width: 66%;
+    justify-content: center;
+
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

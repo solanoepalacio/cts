@@ -3,5 +3,6 @@
   "token": {
     "secret": "thatweallknow",
     "expiration": 36000
-  }
+  },
+  "host": "https://localhost:5000"
 }

@@ -1,23 +1,25 @@
 'use strict'
 
+import actions from '../actions/auth'
+
 export default function getAuthReducer (initialState) {
-  return function authReducer (authState = initialState, action) {
-    switch (action.type) {
-      case 'auth-success':
+  return function authReducer (authState = initialState, { type, payload}) {
+    switch (type) {
+      case actions.authSuccess:
         return Object.assign({}, authState, {
           valid: true,
           failed: false,
-          userId: action.userId
+          userId: payload.userId
         })
       
-      case 'auth-failure':
+      case actions.authFailure:
         return Object.assign({}, authState, {
           valid: false,
           failed: true,
           userId: undefined
         })
 
-      case 'auth-logout':
+      case actions.authAttempt:
         return Object.assign({}, authState, {
           valid: false,
           failed: false,

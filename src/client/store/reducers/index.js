@@ -1,8 +1,6 @@
 'use strict'
 import { combineReducers } from "redux";
 
-'use strict'
-
 export default function reducerFactory (initialState) {
   const reducers = {}
   const expectedReducersList = Object.keys(initialState)

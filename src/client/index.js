@@ -9,6 +9,19 @@ import store from './store'
 import Screen from './components/Screen'
 import Toolbar from './components/Toolbar'
 
+/**
+ * global styles:
+ */
+
+ import './styles/base.scss'
+ import './styles/screen.scss'
+ import './styles/toolbar.scss'
+ 
+ /**
+  * component specific styles:
+  */
+import './styles/login.scss'
+
 const UI = () => (
   <Provider store={store} >
     <div>

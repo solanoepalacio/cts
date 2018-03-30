@@ -1,4 +1,33 @@
-#d3Canvas {
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+
+#app {
+  margin: 0;
+  padding: 0;
+  background-color: #EAEAEA;
   width: 100%;
-  background-color: rgb(240,240,240);
+  height: 100%;
+}
+
+.card {
+  background-color: #F9F4F5;
+  margin: 1em auto;
+  padding: 2.5% 5%;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 22px;
+  background-color: #EF6F6C;
+  color:#F9F4F5;
+}
+
+.btn:hover {
+  cursor: pointer;
+  color: #EF6F6C;
+  background-color: #F9F4F5;
 }
