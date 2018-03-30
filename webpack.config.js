@@ -8,12 +8,12 @@ const port = process.env.PORT || 7770;
 
 const entry = PRODUCTION
   ? [
-      './src/index.js'
+      './src/client/index.js'
     ]
   : [
-      './src/index.js',
-      'webpack/hot/dev-server',
-      'webpack-dev-server/client?http://localhost:7770'
+      './src/client/index.js',
+      // 'webpack/hot/dev-server',
+      // 'webpack-dev-server/client?http://localhost:7770'
     ]
 
 const plugins = PRODUCTION
@@ -62,22 +62,7 @@ module.exports = {
     }]
   },
   output: {
-    path: path.join(__dirname, 'dist/'),
-    publicPath: '/dist/',
+    path: path.join(__dirname, 'src/server/static/js/'),
     filename: 'index_bundle.js'
   }
-}
-
-function normalizePort(val) {
-  if (val === undefined) {
-    // the port was not set
-    return null;
-  }
-
-  if (Number(val) === NaN) {
-    // named pipe
-    return val;
-  }
-  // number port. normalize:
-  return Number(val);
 }
