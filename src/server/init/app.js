@@ -1,9 +1,12 @@
 'use strict'
 
+const path = require('path')
+
 const Koa = require('koa')
+const mount = require('koa-mount')
 const Logger = require('koa-logger')
-const KoaRouter = require('koa-router')
 const bodyParser = require('koa-bodyparser')
+const serve = require('koa-static')
 
 module.exports = function initApp () {
   const app = new Koa()
@@ -11,6 +14,8 @@ module.exports = function initApp () {
   app.use(Logger())
 
   app.use(bodyParser())
+
+  app.use(serveDirectoryStatically('../static'))
 
   const router = require('../routers')
   app.use(router.routes())
@@ -22,4 +27,9 @@ module.exports = function initApp () {
   console.log('==============================')
 
   return app
+}
+
+
+function serveDirectoryStatically (directory) {
+  return mount('/static', serve(path.join(__dirname, directory)))
 }

@@ -18,7 +18,7 @@ const entry = PRODUCTION
 
 const plugins = PRODUCTION
   ? [
-      new webpack.optimizeUglifyJsPlugin()
+      // new webpack.optimizeUglifyJsPlugin()
     ]
   : [
       new webpack.HotModuleReplacementPlugin()
@@ -42,7 +42,7 @@ module.exports = {
       test: /\.(js|jsx)$/,
       loader: 'babel-loader',
       exclude: /node_modules/,
-      query: { presets: ["es2015"]}
+      query: { presets: ["es2015", "react"]}
     },{
       test: /\.(png|jpg|gif)$/,
       loader: ['url-loader?limit=10000&name=images/[hash:12].[ext]'],
