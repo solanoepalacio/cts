@@ -1,11 +1,5 @@
 'use strict'
 
-const Koa = require('koa')
-const Logger = require('koa-logger')
-const KoaRouter = require('koa-router')
-
-
-
 async function initServer () {
 
   const initGlobals = require('./init/globals')
@@ -13,18 +7,11 @@ async function initServer () {
   const initMongo = require('./init/mongo')
   await initMongo()
   
-  const app = new Koa()
-  
-  app.use(Logger())
-  
-  const router = require('./routers')
-  app.use(router.routes())
-  
-  const port = 5000
-  app.listen(5000)
-  
-  console.log('App is listening on port', port)
-  console.log('==============================')
+  const initApp = require('./init/app')
+  const app = await initApp()
+
+  const initPassport = require('./init/passport')
+  await initPassport(app)
 }
 
 initServer()

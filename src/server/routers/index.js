@@ -1,28 +1,17 @@
 'use strict'
+
 const fs = require('fs')
 const path = require('path')
 
-const KoaRouter = require('koa-router')
+const router = require('koa-router')()
 
-const router = KoaRouter()
+const staticRouter = require('./static')
+router.use('/', staticRouter.routes())
 
-router.get('/', async function (ctx) {
-  const appTemplatePath = path.resolve(__dirname, '../static/index.html')
-  ctx.type = 'html'
-  ctx.body = fs.readFileSync(appTemplatePath, 'utf-8')
-})
+const authRouter = require('./auth')
+router.use('/auth', authRouter.routes())
 
-router.get('/static/:filetype/:filename', async function (ctx) {
-  const { filetype, filename } = ctx.params
-  const filepath = path.resolve(__dirname, `../static/${filetype}/${filename}`)
-  let file
-  try {
-    file = fs.readFileSync(filepath, 'utf-8')
-  } catch (e) {
-    console.log(`file not found: /${filetype}/${filename}`)
-  }
-
-  if (file) ctx.body = file
-})
+const apiRouter = require('./api')
+router.use('/api', apiRouter.routes())
 
 module.exports = router

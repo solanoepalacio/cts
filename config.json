@@ -1,0 +1,7 @@
+{
+  "MONGO": "mongodb://localhost:27017/cps",
+  "token": {
+    "secret": "thatweallknow",
+    "expiration": 36000
+  }
+}
