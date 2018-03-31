@@ -36,11 +36,10 @@ module.exports = async function initPassport (app) {
   app.use(session(app))
 
   passport.serializeUser(
-    (user, done) => {  console.log('serializing', user); done(null, user._id) }
+    (user, done) => { done(null, user._id) }
   )
 
   passport.deserializeUser((_id, done) => {
-    console.log('deserialiing user', _id)
     User.findOne({ _id })
     .lean()
     .exec()

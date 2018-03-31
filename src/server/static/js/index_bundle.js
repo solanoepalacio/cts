@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "64f39950e6f83862064b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a5c793ede25c3f3c2c71"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -7772,7 +7772,7 @@ exports = module.exports = __webpack_require__(35)(undefined);
 
 
 // module
-exports.push([module.i, "body {\n  margin: 0;\n  padding: 0;\n  box-sizing: content-box;\n}\n#app {\n  margin: 0;\n  padding: 0;\n  background-color: #eaeaea;\n  width: 100%;\n  height: 100%;\n}\n.card {\n  background-color: #f9f4f5;\n  margin: 1em auto;\n  padding: 2.5% 5%;\n  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);\n}\n.btn {\n  display: inline-block;\n  padding: 8px 22px;\n  background-color: #ef6f6c;\n  color: #f9f4f5;\n}\n.btn:hover {\n  cursor: pointer;\n  color: #ef6f6c;\n  background-color: #f9f4f5;\n}\n", ""]);
+exports.push([module.i, "body {\n  margin: 0;\n  padding: 0;\n  box-sizing: content-box;\n}\n#app {\n  margin: 0;\n  padding: 0;\n  background-color: #eaeaea;\n  width: 100%;\n  height: 100%;\n}\n.card {\n  background-color: #f9f4f5;\n  margin: 1em auto;\n  padding: 2.5% 5%;\n  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);\n}\n.btn {\n  display: inline-block;\n  padding: 8px 22px;\n  background-color: #364652;\n  color: #f9f4f5;\n}\n.btn:hover {\n  cursor: pointer;\n  color: #364652;\n  background-color: #d4e4bc;\n}\n", ""]);
 
 // exports
 
@@ -7800,7 +7800,7 @@ exports = module.exports = __webpack_require__(35)(undefined);
 
 
 // module
-exports.push([module.i, "#toolbar {\n  display: inline-block;\n  width: 22%;\n  height: 100%;\n  overflow: hidden;\n  background-color: #70587c;\n  -webkit-box-shadow: -4px 0px 21px 0px #c8b8db;\n  -moz-box-shadow: -4px 0px 21px 0px #c8b8db;\n  box-shadow: -4px 0px 21px 0px #c8b8db;\n}\n#toolbar #header {\n  background-color: #f9f4f5;\n  color: #502f4c;\n  display: block;\n  width: 100%;\n  height: 30px;\n  text-align: center;\n  position: relative;\n  font-size: 1.2em;\n  line-height: 30px;\n  border-bottom: 1px solid #502f4c;\n}\n", ""]);
+exports.push([module.i, "#toolbar {\n  display: inline-block;\n  width: 22%;\n  height: 100%;\n  overflow: hidden;\n  background-color: #364652;\n  -webkit-box-shadow: -4px 0px 21px 0px #c8b8db;\n  -moz-box-shadow: -4px 0px 21px 0px #c8b8db;\n  box-shadow: -4px 0px 21px 0px #c8b8db;\n}\n#toolbar #header {\n  background-color: #f9f4f5;\n  color: #071108;\n  display: block;\n  width: 100%;\n  height: 30px;\n  text-align: center;\n  position: relative;\n  font-size: 1.2em;\n  line-height: 30px;\n  border-bottom: 1px solid #502f4c;\n}\n", ""]);
 
 // exports
 
@@ -7814,7 +7814,7 @@ exports = module.exports = __webpack_require__(35)(undefined);
 
 
 // module
-exports.push([module.i, "#login {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n}\n#login>h3 {\n  text-align: center;\n  margin: 0;\n  padding: 0;\n  color: #ef6f6c;\n}\n#login>div {\n  padding: 0;\n  margin: 3px;\n  width: 75%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n}\n#login .input-group {\n  width: 66%;\n}\n#login .input-group>span {\n  width: 6%;\n  margin: 0;\n  padding: 0;\n  display: inline-block;\n  line-height: 25px;\n}\n#login .input-group>input {\n  height: 25px;\n  width: 94%;\n  margin: 0;\n  padding: 0;\n  display: inline-block;\n}\n#login #register {\n  display: flex;\n  justify-content: center;\n}\n#login #controllers {\n  width: 66%;\n  justify-content: center;\n}\n#login #controllers .btn {\n  width: 100%;\n  text-align: center;\n}\n", ""]);
+exports.push([module.i, "#login {\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: center;\n}\n#login>h3 {\n  text-align: center;\n  margin: 0;\n  padding: 0;\n  color: #071108;\n}\n#login>div {\n  padding: 0;\n  margin: 3px;\n  width: 75%;\n  display: flex;\n  flex-direction: row;\n  justify-content: space-around;\n}\n#login .input-group {\n  width: 66%;\n}\n#login .input-group>span {\n  width: 6%;\n  margin: 0;\n  padding: 0;\n  display: inline-block;\n  line-height: 25px;\n}\n#login .input-group>input {\n  height: 25px;\n  width: 94%;\n  margin: 0;\n  padding: 0;\n  display: inline-block;\n}\n#login #register {\n  display: flex;\n  justify-content: center;\n}\n#login #controllers {\n  width: 66%;\n  justify-content: center;\n}\n#login #controllers .btn {\n  width: 100%;\n  text-align: center;\n}\n", ""]);
 
 // exports
 
@@ -12577,6 +12577,7 @@ function getAuthReducer(initialState) {
         return Object.assign({}, authState, {
           valid: true,
           failed: false,
+          fetching: false,
           userId: payload.userId
         });
 
@@ -12584,6 +12585,7 @@ function getAuthReducer(initialState) {
         return Object.assign({}, authState, {
           valid: false,
           failed: true,
+          fetching: false,
           userId: undefined
         });
 
@@ -12591,6 +12593,7 @@ function getAuthReducer(initialState) {
         return Object.assign({}, authState, {
           valid: false,
           failed: false,
+          fetching: true,
           userId: undefined
         });
 
@@ -12637,7 +12640,6 @@ function authAttempt() {
 function authSuccess(_ref) {
   var userId = _ref.userId;
 
-  console.log('authSuccess', userId);
   return {
     type: actions.authSuccess,
     payload: { userId: userId }
@@ -12647,7 +12649,6 @@ function authSuccess(_ref) {
 function authFailure(_ref2) {
   var message = _ref2.message;
 
-  console.log('auth failure', message);
   return {
     type: actions.authFailure,
     payload: { message: message }
@@ -12657,17 +12658,16 @@ function authFailure(_ref2) {
 function authRequest(authData) {
   return function (dispatch) {
     dispatch(authAttempt);
+    console.log('authData.register', authData.register);
     var slug = authData.register ? 'register' : 'login';
     var endpoint = 'http://localhost:5000/auth/' + slug;
-    console.log('endpoint', endpoint);
     authData.register = undefined;
-    console.log('endpoint', endpoint);
     return (0, _crossFetch2.default)(endpoint, {
       method: 'POST',
-      header: {
+      headers: {
+        'Content-Type': 'application/json',
         credentials: true,
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        mode: 'cors'
       },
       body: JSON.stringify(authData)
     }).then(function (response) {
@@ -12743,8 +12743,8 @@ var UI = function UI() {
     _react2.default.createElement(
       'div',
       null,
-      _react2.default.createElement(_Screen2.default, null),
-      _react2.default.createElement(_Toolbar2.default, null)
+      _react2.default.createElement(_Toolbar2.default, null),
+      _react2.default.createElement(_Screen2.default, null)
     )
   );
 };
@@ -26052,7 +26052,7 @@ var loggerMiddleware = (0, _reduxLogger.createLogger)();
 var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.compose;
 
 var store = (0, _redux.createStore)((0, _reducers2.default)({
-  auth: { valid: false, failed: false, userId: null }
+  auth: { valid: false, failed: false, userId: null, fetching: false }
 }), window.__state__, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default, loggerMiddleware /*, middleware*/)));
 
 exports.default = store;
@@ -27651,15 +27651,29 @@ var Screen = function (_React$Component) {
   _createClass(Screen, [{
     key: 'render',
     value: function render() {
-      return _react2.default.createElement(
+      var loginScreen = _react2.default.createElement(
         'div',
-        { id: 'screen' },
+        null,
         _react2.default.createElement(_Login2.default, null),
         _react2.default.createElement(
           'div',
           { id: 'more-info', className: 'card' },
           'more info'
         )
+      );
+
+      var app = _react2.default.createElement(
+        'div',
+        { className: 'card' },
+        'app'
+      );
+
+      var screen = this.props.auth.valid ? app : loginScreen;
+
+      return _react2.default.createElement(
+        'div',
+        { id: 'screen' },
+        screen
       );
     }
   }]);
@@ -27668,7 +27682,7 @@ var Screen = function (_React$Component) {
 }(_react2.default.Component);
 
 var mapStateToProps = function mapStateToProps(state) {
-  return state.auth;
+  return { auth: state.auth };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(Screen);
@@ -27719,16 +27733,30 @@ var LoginComponent = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (LoginComponent.__proto__ || Object.getPrototypeOf(LoginComponent)).call(this, props));
 
     _this.state = {
-      email: '',
-      password: ''
+      username: '',
+      password: '',
+      register: false
     };
 
-    _this.handleChange = _this.handleChange.bind(_this);
     _this.login = _this.login.bind(_this);
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.handleToggleRegister = _this.handleToggleRegister.bind(_this);
     return _this;
   }
 
   _createClass(LoginComponent, [{
+    key: 'handleToggleRegister',
+    value: function handleToggleRegister(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      var register = !this.state.register;
+      this.setState({ register: register }, function () {
+        register && _this2.refs.radioButton.setAttribute('checked', register);
+        !register && _this2.refs.radioButton.removeAttribute('checked');
+      });
+    }
+  }, {
     key: 'handleChange',
     value: function handleChange(e) {
       var _e$target = e.target,
@@ -27741,13 +27769,17 @@ var LoginComponent = function (_React$Component) {
     key: 'login',
     value: function login() {
       this.props.authRequest({
-        email: this.state.email,
-        password: this.state.password
+        username: this.state.username,
+        password: this.state.password,
+        register: this.state.register
       });
     }
   }, {
     key: 'render',
     value: function render() {
+      var auth = this.props.auth;
+
+      var buttonText = auth && auth.fetching ? 'loading' : 'login';
       return _react2.default.createElement(
         'div',
         { id: 'login', className: 'card' },
@@ -27770,7 +27802,7 @@ var LoginComponent = function (_React$Component) {
           ),
           _react2.default.createElement('input', {
             type: 'text',
-            name: 'email',
+            name: 'username',
             placeholder: 'jhon@doe.com',
             value: this.state.email,
             onChange: this.handleChange
@@ -27794,24 +27826,21 @@ var LoginComponent = function (_React$Component) {
         ),
         _react2.default.createElement(
           'div',
-          { id: 'register' },
+          { id: 'register', onClick: this.handleToggleRegister },
           _react2.default.createElement(
             'span',
             null,
             'Create an account, please'
           ),
-          _react2.default.createElement('input', { type: 'checkbox' })
+          _react2.default.createElement('input', { type: 'checkbox', ref: 'radioButton' })
         ),
         _react2.default.createElement(
           'div',
           { id: 'controllers' },
           _react2.default.createElement(
             'span',
-            {
-              className: 'btn',
-              onClick: this.login
-            },
-            'Login'
+            { className: 'btn', onClick: this.login },
+            buttonText
           )
         )
       );

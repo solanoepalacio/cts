@@ -9,6 +9,7 @@ export default function getAuthReducer (initialState) {
         return Object.assign({}, authState, {
           valid: true,
           failed: false,
+          fetching: false,
           userId: payload.userId
         })
       
@@ -16,6 +17,7 @@ export default function getAuthReducer (initialState) {
         return Object.assign({}, authState, {
           valid: false,
           failed: true,
+          fetching: false,
           userId: undefined
         })
 
@@ -23,6 +25,7 @@ export default function getAuthReducer (initialState) {
         return Object.assign({}, authState, {
           valid: false,
           failed: false,
+          fetching: true,
           userId: undefined
         })
       

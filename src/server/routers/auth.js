@@ -15,8 +15,8 @@ router.post('/register', async function (ctx) {
   //   email: String
   // }
 
-  const { email, username } = ctx.request.body
-  const userExists = await User.count({ email, username }).lean().exec()
+  const { username } = ctx.request.body
+  const userExists = await User.count({ username }).lean().exec()
   if (userExists) {
     ctx.status = 409
     ctx.type = 'text/plain'
@@ -25,6 +25,7 @@ router.post('/register', async function (ctx) {
   }
 
   const user = await new User(ctx.request.body).save()
+  console.log('user', user)
   createUserSession(ctx, user._id.toString)
   ctx.status = 200
   ctx.type = 'application/json'
@@ -33,7 +34,7 @@ router.post('/register', async function (ctx) {
 })
 
 router.post('/login', async function (ctx) {
-  console.log('login', ctx.request.body)
+  console.log('ctx.request.body', ctx.request.body)
   await passport.authenticate('local', async (error, user) => {
     if (user) {
       createUserSession(ctx, user._id.toString())

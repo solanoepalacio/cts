@@ -10,12 +10,24 @@ class LoginComponent extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      email: '',
-      password: ''
+      username: '',
+      password: '',
+      register: false
     }
-
-    this.handleChange = this.handleChange.bind(this)
+    
     this.login = this.login.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleToggleRegister = this.handleToggleRegister.bind(this)
+  }
+
+  handleToggleRegister (e) {
+    e.preventDefault()
+    const register = !this.state.register
+    this.setState({ register }, () => {
+      register && this.refs.radioButton.setAttribute('checked', register)
+      !register && this.refs.radioButton.removeAttribute('checked')
+    })
+
   }
 
   handleChange (e) {
@@ -25,12 +37,15 @@ class LoginComponent extends React.Component {
 
   login () {
     this.props.authRequest({
-      email: this.state.email,
-      password: this.state.password
+      username: this.state.username,
+      password: this.state.password,
+      register: this.state.register
     })
   }
 
   render () {
+    const { auth } = this.props
+    const buttonText = auth && auth.fetching ? 'loading' : 'login'
     return (
       <div id="login" className="card">
         <h3>
@@ -40,7 +55,7 @@ class LoginComponent extends React.Component {
           <span>icon</span>
           <input 
             type="text"
-            name="email"
+            name="username"
             placeholder="jhon@doe.com"
             value={ this.state.email }
             onChange={ this.handleChange }
@@ -56,16 +71,13 @@ class LoginComponent extends React.Component {
             value={ this.state.password }
           />
         </div>
-        <div id="register">
+        <div id="register" onClick={ this.handleToggleRegister }>
           <span>Create an account, please</span>
-          <input type="checkbox"/>
+          <input type="checkbox" ref="radioButton"/>
         </div>
         <div id="controllers">
-          <span
-            className="btn"
-            onClick={ this.login }
-          >
-            Login
+          <span className="btn" onClick={ this.login }>
+            { buttonText }
           </span>
         </div>
       </div>

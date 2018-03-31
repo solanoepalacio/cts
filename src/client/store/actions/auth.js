@@ -17,7 +17,6 @@ export function authAttempt () {
 }
 
 export function authSuccess ({ userId }) {
-  console.log('authSuccess', userId)
   return {
     type: actions.authSuccess,
     payload: { userId }
@@ -25,7 +24,6 @@ export function authSuccess ({ userId }) {
 }
 
 export function authFailure ({ message }) {
-  console.log('auth failure', message)
   return {
     type: actions.authFailure,
     payload: { message }
@@ -35,17 +33,16 @@ export function authFailure ({ message }) {
 export function authRequest (authData) {
   return function (dispatch) {
     dispatch(authAttempt)
+    console.log('authData.register', authData.register)
     const slug = authData.register ? 'register' : 'login'
     const endpoint = `http://localhost:5000/auth/${slug}`
-    console.log('endpoint', endpoint)
     authData.register = undefined
-    console.log('endpoint', endpoint)
     return fetch(endpoint, {
       method: 'POST',
-      header: {
+      headers: {
+        'Content-Type': 'application/json',
         credentials: true,
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        mode: 'cors'
       },
       body: JSON.stringify(authData)
     })

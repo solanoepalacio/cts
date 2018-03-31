@@ -25,8 +25,8 @@ import './styles/login.scss'
 const UI = () => (
   <Provider store={store} >
     <div>
-      <Screen />
       <Toolbar />
+      <Screen />
     </div>
   </Provider>
 )

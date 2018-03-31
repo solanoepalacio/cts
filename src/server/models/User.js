@@ -5,10 +5,6 @@ const crypto = require('crypto')
 
 const userSchema = new mongoose.Schema(
   {
-    email: {
-      type: String,
-      required: true
-    },
     salt: {
       type: String,
     },
@@ -16,7 +12,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    username: String,
+    username: {
+      type: String,
+      required: true
+    },
     scriptId: String,
     createdAt: Date,
     updatedAt: Date
