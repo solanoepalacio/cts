@@ -40,6 +40,7 @@ export function logoutAttempt () {
 }
 
 export function logoutSuccess () {
+  console.log('logout success')
   return {
     type: actions.logoutSuccess
   }
@@ -61,7 +62,7 @@ export function logoutRequest () {
       credentials: 'include' 
     })
     .then(
-      (response) => response.status === '200' && dispatch(logoutSuccess())
+      (response) => response.status === 200 && dispatch(logoutSuccess())
     )
     .catch(
       (error) => dispatch(logoutFailure())

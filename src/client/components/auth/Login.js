@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as authActions from '../store/actions/auth'
+import * as authActions from '../../store/actions/auth'
 
 class LoginComponent extends React.Component {
   constructor (props) {

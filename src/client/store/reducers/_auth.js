@@ -36,6 +36,7 @@ export default function getAuthReducer (initialState) {
       
       case actions.logoutSuccess:
         return Object.assign({}, authState, {
+          valid: false,
           fetching: false,
           failed: false,
           userId: undefined

@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
+import Logout from './auth/Logout'
+
 class Toolbar extends React.Component {
   constructor(props) {
     super (props)
@@ -28,6 +30,7 @@ class Toolbar extends React.Component {
             <Link to="/dashboard">dashboard</Link>
           </div>
         </div>
+        <Logout />
       </div>
     )
   }

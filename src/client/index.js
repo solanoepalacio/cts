@@ -34,7 +34,6 @@ const UI = () => (
       <div>
         <Toolbar />
         <Screen />
-
       </div>
     </ConnectedRouter>
   </Provider>

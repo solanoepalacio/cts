@@ -4,7 +4,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, withRouter, Route } from 'react-router-dom'
 
-import Login from './Login'
+import Login from './auth/Login'
 
 class Screen extends React.Component {
   constructor (props) {
