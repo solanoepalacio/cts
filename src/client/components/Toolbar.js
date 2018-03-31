@@ -14,7 +14,6 @@ class Toolbar extends React.Component {
 
   render () {
     const { auth } = this.props
-    console.log('auth', auth)
     const activeClassName = auth.valid ? 'active' : ''
     return (
       <div id="toolbar" className={activeClassName}>

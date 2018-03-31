@@ -4,11 +4,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { logoutRequest } from '../../store/actions/auth'
+import authActions from '../../store/actions/auth'
+const { actionCreators } = authActions
 
 
 function Logout (props) {
-  console.log('props', props)
   return (
     <div>
       <p onClick={() => props.logoutRequest()}>logout</p>
@@ -17,6 +17,6 @@ function Logout (props) {
 }
 
 const mapStateToProps = () => ({})
-const mapDispatchToProps = (dispatch) => bindActionCreators({ logoutRequest }, dispatch)
+const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(Logout)

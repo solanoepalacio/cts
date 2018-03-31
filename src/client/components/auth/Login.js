@@ -4,7 +4,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import * as authActions from '../../store/actions/auth'
+import authActions from '../../store/actions/auth'
+const { actionCreators } = authActions
 
 class LoginComponent extends React.Component {
   constructor (props) {
@@ -21,13 +22,12 @@ class LoginComponent extends React.Component {
   }
 
   handleToggleRegister (e) {
-    e.preventDefault()
     const register = !this.state.register
     this.setState({ register }, () => {
       register && this.refs.radioButton.setAttribute('checked', register)
       !register && this.refs.radioButton.removeAttribute('checked')
     })
-
+    return false
   }
 
   handleChange (e) {
@@ -45,7 +45,8 @@ class LoginComponent extends React.Component {
 
   render () {
     const { auth } = this.props
-    const buttonText = auth && auth.fetching ? 'loading' : 'login'
+    const buttonAction = this.state.register ? 'Register' : 'Login'
+    const buttonText = auth && auth.fetching ? 'Loading...' : buttonAction
     return (
       <div id="login" className="card">
         <h3>
@@ -71,6 +72,12 @@ class LoginComponent extends React.Component {
             value={ this.state.password }
           />
         </div>
+        {
+          this.props.auth && this.props.auth.errorMessage &&
+          <div className="sign-in-error">
+            { this.props.auth.errorMessage }
+          </div>
+        }
         <div id="register" onClick={ this.handleToggleRegister }>
           <span>Create an account, please</span>
           <input type="checkbox" ref="radioButton"/>
@@ -85,7 +92,7 @@ class LoginComponent extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => state.auth
-const mapDispatchToProps = (dispatch) => bindActionCreators(authActions, dispatch)
+const mapStateToProps = (state) => ({ auth: state.auth })
+const mapDispatchToProps = (dispatch) => bindActionCreators(actionCreators, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent)

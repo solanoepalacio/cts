@@ -1,6 +1,8 @@
 'use strict'
 
-import actions from '../actions/auth'
+import authActions from '../actions/auth'
+
+const { actions } = authActions
 
 export default function getAuthReducer (initialState) {
   return function authReducer (authState = initialState, { type, payload}) {
@@ -10,7 +12,8 @@ export default function getAuthReducer (initialState) {
           valid: true,
           failed: false,
           fetching: false,
-          userId: payload.userId
+          userId: payload.userId,
+          errorMessage: null
         })
       
       case actions.authFailure:
@@ -18,7 +21,8 @@ export default function getAuthReducer (initialState) {
           valid: false,
           failed: true,
           fetching: false,
-          userId: undefined
+          userId: undefined,
+          errorMessage: payload.message
         })
 
       case actions.authAttempt:
@@ -26,7 +30,8 @@ export default function getAuthReducer (initialState) {
           valid: false,
           failed: false,
           fetching: true,
-          userId: undefined
+          userId: undefined,
+          errorMessage: null
         })
 
       case actions.logoutAttempt:
