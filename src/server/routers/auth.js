@@ -20,21 +20,18 @@ router.post('/register', async function (ctx) {
   if (userExists) {
     ctx.status = 409
     ctx.type = 'text/plain'
-    ctx.body = 'user conflict'
+    ctx.body = 'The user already exists. Please try a different one.'
     return
   }
 
   const user = await new User(ctx.request.body).save()
-  console.log('user', user)
-  createUserSession(ctx, user._id.toString)
+  createUserSession(ctx, user._id.toString())
   ctx.status = 200
   ctx.type = 'application/json'
-  // TODO => send cookie to log user in.
   ctx.body = { userId: user._id }
 })
 
 router.post('/login', async function (ctx) {
-  console.log('ctx.request.body', ctx.request.body)
   await passport.authenticate('local', async (error, user) => {
     if (user) {
       createUserSession(ctx, user._id.toString())
@@ -46,7 +43,7 @@ router.post('/login', async function (ctx) {
     } 
     ctx.status = 401
     ctx.type = 'text/plain'
-    ctx.body = 'forbidden'
+    ctx.body = 'The user/password combination is incorrect. Try again.'
   })(ctx)
 })
 
@@ -56,6 +53,10 @@ router.get('/logout', async function (ctx) {
   ctx.body = 'success'
 })
 
-// router.get('/check', accessMiddleware)
+router.get('/status', accessMiddleware, async function () {
+  ctx.status = 200
+  ctx.type = 'text/plain'
+  ctx.body = 'authenticated'
+})
 
 module.exports = router

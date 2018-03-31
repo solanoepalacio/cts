@@ -35,6 +35,7 @@ userSchema.pre('save', function (next) {
     this.salt = crypto.randomBytes(12).toString('hex')
     this.password = this.encryptPassword(this.password, this.salt)
   }
+  
   if (!this.scriptId) {
     this.scriptId = crypto.randomBytes(8).toString('hex')
   }
