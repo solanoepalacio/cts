@@ -51,11 +51,14 @@ export default function createAsyncAction (name, endpoint) {
         }
 
         const contentType = response.headers.get('Content-Type')
-        return contentType.toLowerCase() === 'application/json' ? response.json() : response.text()
+        console.log('contentType', contentType)
+        return contentType.toLowerCase().indexOf('application/json') !== -1 
+          ? response.json()
+          : response.text()
       })
       .then((payload) => {
         if (!payload) return // error swallowed
-        console.log('authSuccess', storeActions)
+        console.log('dispatching payload', payload)
         dispatch(storeActions[ name + 'Success' ](payload))
       })
       .catch((denialText) => {

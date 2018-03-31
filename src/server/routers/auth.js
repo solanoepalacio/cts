@@ -28,7 +28,7 @@ router.post('/register', async function (ctx) {
   createUserSession(ctx, user._id.toString())
   ctx.status = 200
   ctx.type = 'application/json'
-  ctx.body = { userId: user._id }
+  ctx.body = { user: exposeUser(user) }
 })
 
 router.post('/login', async function (ctx) {
@@ -36,7 +36,8 @@ router.post('/login', async function (ctx) {
     if (user) {
       createUserSession(ctx, user._id.toString())
       ctx.status = 200
-      ctx.body = { userId: user._id }
+      ctx.type = 'application/json'
+      ctx.body = { user: exposeUser(user) }
       return
     } else if (error) {
       console.error('Error authenticathing user: ', error.message || error)
@@ -60,3 +61,10 @@ router.get('/status', accessMiddleware, async function () {
 })
 
 module.exports = router
+
+function exposeUser(user) {
+  return {
+    _id: user._id.toString(),
+    scriptId: user.scriptId
+  }
+}
