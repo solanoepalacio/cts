@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link, withRouter, Route } from 'react-router-dom'
 
 import Login from './Login'
 
@@ -13,23 +14,30 @@ class Screen extends React.Component {
   render () {
     const loginScreen = (
       <div>
-        <Login />
         <div id="more-info" className="card">
           more info
         </div>
+        <Login />
       </div>
     )
 
     const app = (
-      <div className="card">app</div>
+      <div className="card">
+        <Route path="/" exact={true} render={() => (<p>home</p>)} />
+        <Route path="/config" render={() => (<p>config</p>)}/>
+        <Route path="/dashboard" render={() => (<p>dashboard</p>)}/>
+      </div>
     )
+    const { auth } = this.props
+    const screen = auth.valid ? app : loginScreen
+    const activeClassName = auth.valid ? 'active' : ''
 
-    const screen = this.props.auth.valid ? app : loginScreen
-    
-    return (<div id="screen">{ screen }</div>)
+    return (
+      <div id="screen" className={activeClassName}>{ screen }</div>
+    )
   }
 }
 
 const mapStateToProps = (state) => ({ auth: state.auth })
 
-export default connect(mapStateToProps)(Screen)
+export default withRouter(connect(mapStateToProps)(Screen))

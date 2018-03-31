@@ -28,7 +28,22 @@ export default function getAuthReducer (initialState) {
           fetching: true,
           userId: undefined
         })
+
+      case actions.logoutAttempt:
+        return Object.assign({}, authState, {
+          fetching: true          
+        })
       
+      case actions.logoutSuccess:
+        return Object.assign({}, authState, {
+          fetching: false,
+          failed: false,
+          userId: undefined
+        })
+
+      case actions.logoutFailure:
+        return Object.assign({}, authState)
+
       default:
         return authState
     }

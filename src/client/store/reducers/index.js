@@ -1,4 +1,5 @@
 'use strict'
+
 import { combineReducers } from "redux";
 
 export default function reducerFactory (initialState) {
@@ -15,5 +16,6 @@ export default function reducerFactory (initialState) {
 
     reducers[reducerName] = getReducer(initialState[reducerName])
   }
+
   return combineReducers(reducers)
 }

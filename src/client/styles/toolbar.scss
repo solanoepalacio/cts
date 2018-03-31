@@ -1,7 +1,7 @@
 
 #toolbar {
   display: inline-block;
-  width: 22%;
+  width: 0;
   height: 100%;
   overflow: hidden;
 
@@ -10,6 +10,13 @@
   -webkit-box-shadow: -4px 0px 21px 0px rgba(200,184,219,1);
   -moz-box-shadow: -4px 0px 21px 0px rgba(200,184,219,1);
   box-shadow: -4px 0px 21px 0px rgba(200,184,219,1);
+
+  transition: width 0.75s;
+
+  &.active {
+    transition: width 0.75s;
+    width: 22%;
+  }
 
   #header {
     background-color: #F9F4F5;
@@ -22,5 +29,10 @@
     font-size: 1.2em;
     line-height: 30px;
     border-bottom: 1px solid #502F4C;
+  }
+
+  a {
+    color: #F9F4F5;
+    text-decoration: none;
   }
 }

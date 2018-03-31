@@ -1,17 +1,13 @@
 'use strict';
 
-import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import createHistory from 'history/createBrowserHistory'
-import { routerMiddleware, routerReducer } from 'react-router-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
+
+import thunkMiddleware from 'redux-thunk'
 
 import reducersFactory from './reducers'
 
-const history = createHistory()
 const loggerMiddleware = createLogger();
-
-// const middleware = routerMiddleware(history);
 
 /**
  * This is for redux-devtools-extension in Chrome console.
@@ -24,7 +20,7 @@ const store = createStore(
   }),
   window.__state__,
   composeEnhancers(
-    applyMiddleware(thunkMiddleware, loggerMiddleware/*, middleware*/)
+    applyMiddleware(thunkMiddleware, loggerMiddleware)
   )
 )
 
