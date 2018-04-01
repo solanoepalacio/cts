@@ -48,7 +48,7 @@ class LoginComponent extends React.Component {
     const buttonAction = this.state.register ? 'Register' : 'Login'
     const buttonText = auth && auth.fetching ? 'Loading...' : buttonAction
     return (
-      <div id="login" className="card">
+      <div id="login-component" className="card">
         <h3>
           <label>Let's get started:</label>
         </h3>

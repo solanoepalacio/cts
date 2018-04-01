@@ -17,7 +17,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
   reducersFactory({
     auth: { valid: false, failed: false, userId: null, fetching: false },
-    user: { _id: null, scriptId: null }
+    user: { _id: null, scriptId: null },
+    config: { fetching: false, script: null }
   }),
   window.__state__,
   composeEnhancers(

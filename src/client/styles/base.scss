@@ -14,9 +14,15 @@ body {
 
 .card {
   background-color: #F9F4F5;
-  margin: 1em auto;
-  padding: 2.5% 5%;
+  margin: 0.4em auto;
+  padding: 1% 5%;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.section-header {
+  font-size: 1.4em;
+  color: #071108;
+  margin-bottom: 10px;
 }
 
 .btn {

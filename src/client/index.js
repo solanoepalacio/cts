@@ -25,6 +25,7 @@ import Toolbar from './components/Toolbar'
 * component specific styles:
 */
 import './styles/login.scss'
+import './styles/script.scss'
 
 const history = createBrowserHistory()
 

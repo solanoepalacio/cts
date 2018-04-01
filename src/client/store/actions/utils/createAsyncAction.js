@@ -36,8 +36,6 @@ export default function createAsyncAction (name, endpoint) {
         Object.assign(options, { headers })
 
         options.body = JSON.stringify(requestBody)
-
-        console.log('options', options)
       }
 
       return  fetch(endpoint, options).then((response) => {

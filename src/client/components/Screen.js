@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Link, withRouter, Route } from 'react-router-dom'
 
 import Login from './auth/Login'
+import Config from './config'
 
 class Screen extends React.Component {
   constructor (props) {
@@ -22,9 +23,9 @@ class Screen extends React.Component {
     )
 
     const app = (
-      <div className="card">
+      <div>
         <Route path="/" exact={true} render={() => (<p>home</p>)} />
-        <Route path="/config" render={() => (<p>config</p>)}/>
+        <Route path="/config" component={ Config }/>
         <Route path="/dashboard" render={() => (<p>dashboard</p>)}/>
       </div>
     )
