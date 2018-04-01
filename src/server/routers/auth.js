@@ -54,7 +54,7 @@ router.get('/logout', async function (ctx) {
   ctx.body = 'success'
 })
 
-router.get('/status', accessMiddleware, async function () {
+router.get('/status', accessMiddleware, async function (ctx) {
   ctx.status = 200
   ctx.type = 'text/plain'
   ctx.body = 'authenticated'

@@ -15,10 +15,9 @@ router.get('/', async function (ctx) {
 })
 
 router.get('/loader', async function (ctx) {
-  console.log('ctx.status', ctx.state)
-  const scriptLoaderTemplatePath = path.resolve(__dirname, '../static/scriptLoaderTemplate')
+  const clientScriptTemplatePath = path.resolve(__dirname, '../static/clientScriptTemplate')
 
-  const scriptTemplate = fs.readFileSync(scriptLoaderTemplatePath, 'utf-8')
+  const scriptTemplate = fs.readFileSync(clientScriptTemplatePath, 'utf-8')
   const { scriptId } = ctx.state.user
   const clientScript = scriptTemplate
     .replace('{{scriptId}}', scriptId)

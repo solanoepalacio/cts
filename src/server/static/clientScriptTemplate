@@ -2,4 +2,4 @@
   if(h.htmp)return;p=e.createElement(a);p.async=!0;
   p.src=t+m;s=e.getElementsByTagName(a)[0];
   s.parentNode.insertBefore(p,s);h.htmp=!0;
-})(window,document,'script','{{host}}/public/loader',"{{scriptId}}");
+})(window,document,'script','{{host}}/public/loader/',"{{scriptId}}");

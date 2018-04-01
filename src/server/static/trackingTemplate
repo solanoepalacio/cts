@@ -1,0 +1,160 @@
+'use strict'
+
+!(function () {
+  // for developers:
+  let _ENV = '{{{environment}}}'
+  if (_ENV === '{{{environment}}}') {
+    _ENV === 'production'
+  } 
+
+  const host = '{{{host}}}'
+  const scriptId = '{{{scriptId}}}'
+  const sessionId = '{{{sessionId}}}'
+  const configEvents = '{{{configEvents}}}'
+  
+  let bounceTimeout = '{{{bounceTimeout}}}' // from config (how much time to consider not bouncing)
+  if (bounceTimeout === '{{{bounceTimeout}}}') {
+    bounceTimeout = 10 // segs
+  }
+  
+  console.log('host', host)
+  console.log('uid', scriptId)
+  console.log('sessionId', sessionId)
+  console.log('configEvents', configEvents)
+  console.log('bounceTimeout', bounceTimeout)
+
+  const session = {
+    scriptId: scriptId,
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight,
+    referrer: window.referrer,
+    platform: navigator.platform,
+    language: navigator.language,
+    clicks: [],
+    events: [], // TODO: get event names from user config and render them where necessary in the script
+    views: [], // paths
+    bounced: true
+  }
+
+  session.__proto__.addClick = function (clickEvent) {
+    this.clicks.push(
+      {
+        // what info should be tracked could also be getted from the config
+        // note: can we reconstruct the element to show it on cts app?
+        position: { x: clickEvent.clientX, y: clickEvent.clientY }
+        // if more info is needed: ...
+      }
+    )
+  }
+
+  session.__proto__.addView = function (hashChangeEvent) {
+    this.views.push(
+      {
+        url: document.location.href,
+        referrer: document.referrer,
+        startedAt: new Date()
+      }
+    )
+  }
+
+  session.__proto__.addEvent = function (event, type, name) {
+    // ... TODO: depends on config
+  }
+
+
+  session.__proto__.save = function (fallback) {
+    if (!fallback) {
+      // fallback is thruthy when navigator.sendBeacon is not present
+      // and so the session is saved when it starts and periodically
+      this.bounced = false
+    } else {
+      // keep saving every 120 seconds
+      setTimeout(this.save, 120 * 1000)
+    }
+    
+    let data = Object.assign({}, this)
+
+    // used server-side to calculate the timezone
+    data.clientDate = Date.now()
+    
+    const options = {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        "Content-Type": 'application/json'
+      },
+      body: JSON.stringify(data)
+    }
+
+    fetch(host + 'public/session/save', options)
+    .then((response) => {
+      if (_ENV !== 'production') {
+        console.log('[session-save] response status:', response.status)
+        return response.json()
+      }
+      return Promise.resolve(false)
+    })
+    .then((response) => {
+      if (response) {
+        console.log('[session-save] response:', response)
+      }
+    })
+    .catch((error) => {
+      if (_ENV !== 'production') {
+        console.log('[session-save] request Error', error)
+      }
+    })
+
+  }
+
+  session.__proto__.end = function () {
+    this.clientDate = Date.now() // used server-side to calculate timezone
+    if (navigator.sendBeacon) {
+      let data = '?'
+      const dataKeys = Object.keys(this)
+      for (let i = 0; i < dataKeys.length; i++) {
+        const key = dataKeys[i]
+        if (i !== 0) {
+          data += '&'
+        }
+        data += key
+        data += '='
+        data += data[key]
+      }
+      data += '&isBeacon=true'
+      navigator.sendBeacon(host + '/public/session/end' + data)
+    } else {
+      const data = Object.assign({}, this)
+      
+      const options = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        body: JSON.stringify(data)
+      }
+      // this request might never get to the server.
+      fetch(host + 'public/session/end', options)
+    }
+  }
+
+  if (!navigator.sendBeacon) {
+    session.save(true) //  cant be sure if the session will be saved otherwise
+  }
+
+  window.setTimeout(session.save, bounceTimeout * 1000)
+
+
+  window.onunload = () => {
+    alert('window.onunload')
+    session.end()
+  }
+
+  window.onload = () => {
+    window.addEventListener('click', session.addClick)
+  }
+
+})()
+
+

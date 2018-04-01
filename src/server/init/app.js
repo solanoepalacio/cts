@@ -29,7 +29,6 @@ module.exports = function initApp () {
   return app
 }
 
-
 function serveDirectoryStatically (directory) {
   return mount('/static', serve(path.join(__dirname, directory)))
 }

@@ -4,5 +4,9 @@
     "secret": "thatweallknow",
     "expiration": 36000
   },
-  "host": "https://localhost:5000"
+  "host": "http://localhost:5000",
+  "appToken": "c480bfaa2e28bfef",
+  "behavior": {
+    "reloadThreshold": 10
+  }
 }
