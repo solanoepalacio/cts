@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6a039221d8e78f7244c9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9f4c8dc168eb8a3771bf"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -14749,8 +14749,6 @@ function getUserReducer(initialState) {
 
     switch (type) {
       case _auth2.default.actions.authSuccess:
-        console.log('payload', payload);
-        console.log('userState', userState);
         return Object.assign({}, userState, payload.user);
 
       case _auth2.default.actions.logoutSuccess:

@@ -2,6 +2,7 @@
 
 !(function () {
   // for developers:
+  window.alert('hey babe')
   let _ENV = '{{{environment}}}'
   if (_ENV === '{{{environment}}}') {
     _ENV === 'production'
@@ -14,20 +15,14 @@
   
   let bounceTimeout = '{{{bounceTimeout}}}' // from config (how much time to consider not bouncing)
   if (bounceTimeout === '{{{bounceTimeout}}}') {
-    bounceTimeout = 10 // segs
+    bounceTimeout = 1 // segs
   }
   
-  console.log('host', host)
-  console.log('uid', scriptId)
-  console.log('sessionId', sessionId)
-  console.log('configEvents', configEvents)
-  console.log('bounceTimeout', bounceTimeout)
-
   const session = {
     scriptId: scriptId,
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight,
-    referrer: window.referrer,
+    referrer: document.referrer,
     platform: navigator.platform,
     language: navigator.language,
     clicks: [],
@@ -36,33 +31,43 @@
     bounced: true
   }
 
-  session.__proto__.addClick = function (clickEvent) {
+  session.__proto__.addClick = addClickToSession.bind(session)
+  
+  function addClickToSession (clickEvent) {
     this.clicks.push(
       {
         // what info should be tracked could also be getted from the config
         // note: can we reconstruct the element to show it on cts app?
+        url: document.location.href,
+        timestamp: Number(Date.now()),
         position: { x: clickEvent.clientX, y: clickEvent.clientY }
         // if more info is needed: ...
       }
     )
   }
 
-  session.__proto__.addView = function (hashChangeEvent) {
+  session.__proto__.addView = addViewToSession.bind(session)
+  
+  function addViewToSession (hashChangeEvent) {
     this.views.push(
       {
         url: document.location.href,
         referrer: document.referrer,
-        startedAt: new Date()
+        timestamp: Number(Date.now())
       }
     )
   }
 
-  session.__proto__.addEvent = function (event, type, name) {
+  session.__proto__.addEvent = addEventToSession.bind(session)
+
+  function addEventToSession (event, type, name) {
     // ... TODO: depends on config
   }
 
 
-  session.__proto__.save = function (fallback) {
+  session.__proto__.save = saveSession.bind(session)
+  
+  function saveSession (fallback) {
     if (!fallback) {
       // fallback is thruthy when navigator.sendBeacon is not present
       // and so the session is saved when it starts and periodically
@@ -71,9 +76,7 @@
       // keep saving every 120 seconds
       setTimeout(this.save, 120 * 1000)
     }
-    
     let data = Object.assign({}, this)
-
     // used server-side to calculate the timezone
     data.clientDate = Date.now()
     
@@ -86,7 +89,7 @@
       body: JSON.stringify(data)
     }
 
-    fetch(host + 'public/session/save', options)
+    fetch(host + '/public/session/save', options)
     .then((response) => {
       if (_ENV !== 'production') {
         console.log('[session-save] response status:', response.status)
@@ -107,7 +110,9 @@
 
   }
 
-  session.__proto__.end = function () {
+  session.__proto__.end = endSession.bind(session)
+  
+  function endSession () {
     this.clientDate = Date.now() // used server-side to calculate timezone
     if (navigator.sendBeacon) {
       let data = '?'
@@ -119,20 +124,20 @@
         }
         data += key
         data += '='
-        data += data[key]
+        data += typeof this[key] === 'object' ? JSON.stringify(this[key]) : this[key]
       }
       data += '&isBeacon=true'
       navigator.sendBeacon(host + '/public/session/end' + data)
     } else {
       const data = Object.assign({}, this)
-      
+      const keys = selectKeys(data)
       const options = {
         method: 'POST',
         mode: 'cors',
         headers: {
           "Content-Type": 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data, keys)
       }
       // this request might never get to the server.
       fetch(host + 'public/session/end', options)
@@ -147,12 +152,25 @@
 
 
   window.onunload = () => {
-    alert('window.onunload')
     session.end()
   }
 
   window.onload = () => {
+    session.addView()
     window.addEventListener('click', session.addClick)
+  }
+
+  function selectKeys (data) {
+    const keys = []
+    Object.keys(data).forEach((key) => {
+      if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
+        const subKeys = selectKeys(data[key])
+        keys.concat(subKeys)
+        return
+      }
+      keys.push(key)
+    })
+    return keys
   }
 
 })()

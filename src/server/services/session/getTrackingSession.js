@@ -6,7 +6,9 @@ const jwt = require('jsonwebtoken')
 const Session = require('../../models/Session')
 const Device = require('../../models/Device')
 
-module.exports = async function createTrackingSession (ctx, scriptId) {
+const normalizeClientDate = require('./utils/normalizeClientDate')
+
+module.exports = async function getTrackingSession (ctx, scriptId) {
   // TODO : ...global tracking
   const appToken = ctx.cookies.get(appConfig.appToken)
   if (!appToken) {
@@ -17,20 +19,18 @@ module.exports = async function createTrackingSession (ctx, scriptId) {
     // the user has visited a site with cts installed
 
   }
-
   const sessionToken = ctx.cookies.get(scriptId)
 
   const clientDate = ctx.req.body && ctx.req.body.clientDate
-  const sessionTime = getNormalizedDate(clientDate)
+  const sessionTime = normalizeClientDate(clientDate)
 
   let session
-  const newCookieData = {}
-
   if (sessionToken) {
     // user has visited the same website before
     const { sessionId, deviceId } = jwt.verify(sessionToken, appConfig.token.secret)
-
     session = await Session.findOne({ _id: sessionId }).exec()
+
+    console.log('session', session)
 
     if (!session.finishedAt) {
       // session hasn't finished (ex: user is opening a new tab)
@@ -70,26 +70,8 @@ module.exports = async function createTrackingSession (ctx, scriptId) {
     session = new Session({
       scriptId,
       startedAt: sessionTime,
-      deviceId: device._id.toString()
+      device: device._id.toString()
     })
     return session.save()
-  }
-}
-
-function getNormalizedDate (rawDate) {
-  
-  const serverTimezoneOffset = (new Date()).getTimezoneOffset()
-  const dateTimezoneOffset = rawDate.getTimezoneOffset()
-  if (serverTimezoneOffset === dateTimezoneOffset) {
-    return moment(rawDate)
-  }
-  const serverTime = moment()
-  const date = moment(rawDate)
-
-  const offsetDifference = serverTimezoneOffset - dateTimezoneOffset
-  if ( offsetDifference > 0) {
-    return date.subtract(offsetDifference, 'hours')
-  } else {
-    return date.add(offsetDifference, 'hours')
   }
 }

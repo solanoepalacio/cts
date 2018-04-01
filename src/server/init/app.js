@@ -4,14 +4,17 @@ const path = require('path')
 
 const Koa = require('koa')
 const mount = require('koa-mount')
+const cors = require('koa-cors')
+const serve = require('koa-static')
 const Logger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
-const serve = require('koa-static')
 
 module.exports = function initApp () {
   const app = new Koa()
 
   app.use(Logger())
+
+  app.use(cors())
 
   app.use(bodyParser())
 

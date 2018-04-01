@@ -4,8 +4,8 @@
   "description": "plain d3 webpack boilerplate",
   "main": "index.js",
   "scripts": {
-    "dev": "rimraf src/server/static/js/* && NODE_ENV=development webpack -w & NODE_PATH=. nodemon --ignore 'src/server/static/js/*' src/server/server.js",
-    "start": " rimraf src/server/static/js/* &&  NODE_ENV=production webpack && NODE_PATH=. node src/server/server.js",
+    "dev": "export NODE_ENV=development && rimraf src/server/static/js/* && webpack -w & NODE_ENV=development NODE_PATH=. nodemon --ignore 'src/server/static/js/*' src/server/server.js",
+    "start": "export NODE_ENV=production && rimraf src/server/static/js/* &&  webpack && NODE_PATH=. node src/server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -39,6 +39,7 @@
     "koa": "^2.5.0",
     "koa-body-parser": "^1.1.2",
     "koa-bodyparser": "^4.2.0",
+    "koa-cors": "0.0.16",
     "koa-logger": "^3.2.0",
     "koa-mount": "^3.0.0",
     "koa-passport": "^4.0.1",

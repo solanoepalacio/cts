@@ -3,7 +3,7 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 
-const userSchema = new mongoose.Schema(
+const deviceSchema = new mongoose.Schema(
   {
     createdAt: Date
   },
@@ -16,4 +16,4 @@ const userSchema = new mongoose.Schema(
   }
 )
 
-module.exports = mongoose.model('devices', userSchema)
+module.exports = mongoose.model('devices', deviceSchema)
