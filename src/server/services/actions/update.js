@@ -18,15 +18,16 @@ async function updateCollection (collectionName, newSession, existingSession) {
   const collection = newSession[collectionName]
 
   if (!collection || !collection.length) {
+    // no actions to be appended.
     return existingSession
   }
 
   for (const entity of collection) {
-    const exists = existingSession[collectionName].find(
+    const actionExists = !!existingSession[collectionName].find(
       (e) => e.timestamp === entity.timestamp
     )
 
-    if (exists) {
+    if (actionExists) {
       continue
     }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const updateActions = require('./updateActions')
+const updateActions = require('../actions/update')
 const normalizeClientDate = require('./utils/normalizeClientDate')
 
 module.exports = async function updateSession (sessionData, session, finishAt) {
@@ -21,5 +21,6 @@ module.exports = async function updateSession (sessionData, session, finishAt) {
   if (finishAt && session.tabCount < 1) {
     session.finishedAt = normalizeClientDate(new Date(finishAt))
   }
+  
   return session.save()
 }

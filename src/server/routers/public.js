@@ -9,6 +9,7 @@ const router = require('koa-router')()
 const Session = require('../models/Session')
 
 const updateSession = require('../services/session/updateSession')
+const getConfigEvents = require('../services/config/getEvents')
 const getTrackingSession = require('../services/session/getTrackingSession')
 
 router.get('/loader/:scriptId', async function (ctx) {
@@ -17,15 +18,15 @@ router.get('/loader/:scriptId', async function (ctx) {
   // get and set tracking session
   const session = await getTrackingSession(ctx, scriptId)
 
-  if (!session.finishedAt) {
-    session.tabCount ++
-    await Session.update({ _id: session._id }, { $inc: { tabCount: 1 }})
-  }
+  await Session.update({ _id: session._id }, { $inc: { tabCount: 1 }})
 
-  // when config is created, here we should get the client config
-  // using the script id
-
-  // get template
+  /**
+   * get user config events
+   */
+  const configEvents = await getConfigEvents(scriptId)
+  /**
+   * generate script
+   */
   const scriptTemplatePath = path.resolve(__dirname, '../static/trackingTemplate')
   const template = fs.readFileSync(scriptTemplatePath, 'utf-8')
 
@@ -38,13 +39,19 @@ router.get('/loader/:scriptId', async function (ctx) {
     // .replace('{{{configEvents}}}', ) TODO: get from client config
 
 
-  // set script variables
+  /**
+   * cookie
+   */
   const cookieData = {
     sessionId: session._id.toString(),
     deviceId: session.device.toString()
   }
   const newToken = jwt.sign(cookieData, appConfig.token.secret)
   ctx.cookies.set(scriptId, newToken)
+
+  /**
+   * respond
+   */
   ctx.set({ 'Content-Type': 'application/json' })
   ctx.body = script
 })
@@ -63,21 +70,21 @@ router.post('/session/save', async function (ctx) {
 router.post('/session/end', async function (ctx) {
   const { scriptId } = ctx.query
 
-  if (!scriptId) {
-    console.log('WARNING => scriptId not found')
-  }
-
   const query = normalizeQuery(ctx.query)
   try {
     let session = await getTrackingSession(ctx, scriptId)
-    const finishSessionAt = query.clientDate
-    await Session.update({ _id: session._id }, { $inc: { tabCount: -1 }})
-    session.tabCount--
-    await updateSession(query, session, finishSessionAt)
+
+    session = await Session.findOneAndUpdate(
+      { _id: session._id },
+      { $inc: { tabCount: -1 }},
+      { returnNewDocument: true }
+    )
+
+    await updateSession(query, session, query.clientDate)
     
   } catch (e) {
     console.log('WARNING => error updating session end:', e)
-    ctx.status = 5000
+    ctx.status = 500
     ctx.body = 'failure'
     return
   }
