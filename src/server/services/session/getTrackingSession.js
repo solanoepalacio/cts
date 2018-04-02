@@ -24,7 +24,7 @@ module.exports = async function getTrackingSession (ctx, domainId) {
 
   let deviceId
   if (sessionToken) {
-    const lastSession = await getLastSession(sessionToken)
+    const lastSession = await getLastSession(sessionToken, sessionTime)
 
     if (!lastSession.finishedAt) {
       // last session hasn't finished yet

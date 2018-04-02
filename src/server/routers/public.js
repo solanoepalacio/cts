@@ -8,7 +8,7 @@ const router = require('koa-router')()
 
 const Session = require('../models/Session')
 
-const getConfigEvents = require('../services/config/getEvents')
+// const getConfigEvents = require('../services/config/getEvents')
 const updateSession = require('../services/session/updateSession')
 const getTrackingSession = require('../services/session/getTrackingSession')
 
@@ -23,7 +23,7 @@ router.get('/loader/:domainId', async function (ctx) {
   /**
    * get user config events
    */
-  const configEvents = await getConfigEvents(domainId)
+  // const configEvents = await getConfigEvents(domainId)
 
   /**
    * generate script

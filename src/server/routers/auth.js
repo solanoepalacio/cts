@@ -63,8 +63,10 @@ router.get('/status', accessMiddleware, async function (ctx) {
 module.exports = router
 
 function exposeUser(user) {
+  console.log('user', user)
   return {
+    // // WHEN the ui is ready to use many domains, change this:
     _id: user._id.toString(),
-    domainId: user.domainId
+    domainId: user.domains[0]
   }
 }

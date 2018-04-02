@@ -36,11 +36,17 @@ class LoginComponent extends React.Component {
   }
 
   login () {
-    this.props.authRequest({
-      username: this.state.username,
-      password: this.state.password,
-      register: this.state.register
-    })
+    if (this.state.register) {
+      this.props.registerRequest({
+        username: this.state.username,
+        password: this.state.password
+      })
+    } else {
+      this.props.authRequest({
+        username: this.state.username,
+        password: this.state.password
+      })
+    }
   }
 
   render () {

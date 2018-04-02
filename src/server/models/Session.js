@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 const sessionSchema = new mongoose.Schema(
   {
-    domainId: {
+    domain: {
       type: String,
       required: true
     },
@@ -36,12 +36,9 @@ const sessionSchema = new mongoose.Schema(
       type: Number,
       default: 0
     },
-    lastTabClosedAt: {
-      type: Date
-    },
     windowWidth: Number,
     windowHeight: Number,
-    referer: String,
+    referrer: String,
     platform: String,
     language: String,
     bounced: {
@@ -58,12 +55,13 @@ const sessionSchema = new mongoose.Schema(
 )
 
 sessionSchema.pre('save', function (next) {
-  // TODO:
-  // merge save data.
-  // order events/clicks/views
-  
-  // loop clicks/events/views creating them & mapping them to ids
+  const chronologicalProperties = ['views', 'events', 'clicks']
+  for (const prop of chronologicalProperties) {
+    this[prop].sort(
+      (a, b) => a.timestamp - b.timestamp
+    )
+  }
   next()
 })
 
-module.exports = mongoose.model('sessionSchema', sessionSchema)
+module.exports = mongoose.model('sessions', sessionSchema)

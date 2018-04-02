@@ -6,7 +6,7 @@ export default (props) => {
   const script = props.script ? props.script : 'Loading...'
   return (
     <div id="script" className="card">
-      <div class="card-title">
+      <div className="card-title">
         Script:
       </div>
       <div>

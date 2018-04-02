@@ -38,7 +38,7 @@ export default function createAsyncAction (name, endpoint) {
         options.body = JSON.stringify(requestBody)
       }
 
-      return  fetch(endpoint, options).then((response) => {
+      return fetch(endpoint, options).then((response) => {
         if (response.status >= 500) {
           console.error('REQUEST - SERVER ERROR:', response.error || response)
           return promise.resolve(false) // swallow errors

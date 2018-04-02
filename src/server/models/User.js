@@ -3,8 +3,19 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 
+const Domain = require('./Domain')
+
 const userSchema = new mongoose.Schema(
   {
+    domains: {
+      default: [],
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'domains'
+        }
+      ]
+    },
     salt: {
       type: String,
     },
@@ -16,7 +27,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    domainId: String,
     createdAt: Date,
     updatedAt: Date
   },
@@ -30,14 +40,16 @@ userSchema.methods.encryptPassword = function (password, salt) {
   const encryptedPassword = crypto.createHmac('sha256', salt).update(password).digest('hex')
 }
 
-userSchema.pre('save', function (next) {
+userSchema.pre('save', async function (next) {
   if (!this.salt) {
     this.salt = crypto.randomBytes(12).toString('hex')
     this.password = this.encryptPassword(this.password, this.salt)
   }
   
-  if (!this.domainId) {
-    this.domainId = crypto.randomBytes(8).toString('hex')
+  if (!this.domains.length) {
+    const domain = new Domain({ user: this._id })
+    await domain.save()
+    this.domains.push(domain._id)
   }
   next()
 })

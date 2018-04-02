@@ -2,7 +2,6 @@
 
 !(function () {
   // for developers:
-  window.alert('hey babe')
   let _ENV = '{{{environment}}}'
   if (_ENV === '{{{environment}}}') {
     _ENV === 'production'

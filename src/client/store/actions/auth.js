@@ -9,6 +9,10 @@ const { actions, actionCreators } = createAsyncActions(
       endpoint: 'http://localhost:5000/auth/login'
     },
     {
+      name: 'register',
+      endpoint: 'http://localhost:5000/auth/register'
+    },
+    {
       name: 'logout',
       endpoint: 'http://localhost:5000/auth/logout'
     }

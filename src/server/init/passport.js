@@ -10,7 +10,7 @@ const localStrategy = new LocalStrategy({}, async (username, password, done) => 
   try {  
     const user = await User.findOne({ username },
       {
-        domainId: 1,
+        domains: 1,
         password: 1,
         salt: 1
       }
@@ -36,24 +36,7 @@ module.exports = async function initPassport (app) {
   
   app.use(session(app))
 
-  passport.serializeUser(
-    (user, done) => { done(null, user._id) }
-  )
-
-  passport.deserializeUser((_id, done) => {
-    User.findOne({ _id })
-    .lean()
-    .exec()
-    .then((user) => {
-      done(null, user._id)
-    })
-    .catch((error) => {
-      done(error, null)
-    })
-  })
-
   passport.use(localStrategy)
 
   app.use(passport.initialize())
-  app.use(passport.session())
 }

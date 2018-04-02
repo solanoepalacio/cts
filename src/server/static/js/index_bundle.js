@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "09bff62c51b0c8309cf7"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ca0b4f6406a9b98830ff"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -6359,6 +6359,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var _createAsyncActions = (0, _createAsyncActions3.default)([{
   name: 'auth',
   endpoint: 'http://localhost:5000/auth/login'
+}, {
+  name: 'register',
+  endpoint: 'http://localhost:5000/auth/register'
 }, {
   name: 'logout',
   endpoint: 'http://localhost:5000/auth/logout'
@@ -14615,6 +14618,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function createAsyncActions(actionsData) {
   var actions = {};
   var actionCreators = {};
+
   var _iteratorNormalCompletion = true;
   var _didIteratorError = false;
   var _iteratorError = undefined;
@@ -30571,13 +30575,26 @@ var loggerMiddleware = (0, _reduxLogger.createLogger)();
  */
 var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.compose;
 
-var store = (0, _redux.createStore)((0, _reducers2.default)({
-  auth: { valid: false, failed: false, userId: null, fetching: false },
-  user: { _id: null, domainId: null },
-  config: { fetching: false, script: null }
-}), window.__state__, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default, loggerMiddleware)));
+var initialState = {
+  user: {
+    _id: null,
+    domainId: null
+  },
+  config: {
+    fetching: false,
+    script: null
+  },
+  auth: {
+    valid: false,
+    failed: false,
+    userId: null,
+    fetching: false
+  }
+};
 
-exports.default = store;
+var middleWares = (0, _redux.applyMiddleware)(_reduxThunk2.default, loggerMiddleware);
+
+exports.default = (0, _redux.createStore)((0, _reducers2.default)(initialState), window.__state__, composeEnhancers(middleWares));
 
 /***/ }),
 /* 289 */
@@ -31445,11 +31462,17 @@ var LoginComponent = function (_React$Component) {
   }, {
     key: 'login',
     value: function login() {
-      this.props.authRequest({
-        username: this.state.username,
-        password: this.state.password,
-        register: this.state.register
-      });
+      if (this.state.register) {
+        this.props.registerRequest({
+          username: this.state.username,
+          password: this.state.password
+        });
+      } else {
+        this.props.authRequest({
+          username: this.state.username,
+          password: this.state.password
+        });
+      }
     }
   }, {
     key: 'render',
@@ -31669,7 +31692,7 @@ exports.default = function (props) {
     { id: 'script', className: 'card' },
     _react2.default.createElement(
       'div',
-      { 'class': 'card-title' },
+      { className: 'card-title' },
       'Script:'
     ),
     _react2.default.createElement(
