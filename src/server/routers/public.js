@@ -6,6 +6,8 @@ const path = require('path')
 const jwt = require('jsonwebtoken')
 const router = require('koa-router')()
 
+const Session = require('../models/Session')
+
 const updateSession = require('../services/session/updateSession')
 const getTrackingSession = require('../services/session/getTrackingSession')
 
@@ -14,6 +16,11 @@ router.get('/loader/:scriptId', async function (ctx) {
 
   // get and set tracking session
   const session = await getTrackingSession(ctx, scriptId)
+
+  if (!session.finishedAt) {
+    session.tabCount ++
+    await Session.update({ _id: session._id }, { $inc: { tabCount: 1 }})
+  }
 
   // when config is created, here we should get the client config
   // using the script id
@@ -54,20 +61,6 @@ router.post('/session/save', async function (ctx) {
 })
 
 router.post('/session/end', async function (ctx) {
-  console.log('ctx.params', ctx.query)
-  // =>
-  // scriptId: 'fc093366186859b5',
-  // windowWidth: '647',
-  // windowHeight: '626',
-  // referrer: '',
-  // platform: 'Linux x86_64',
-  // language: 'en-GB',
-  // clicks: '',
-  // events: '',
-  // views: '[object Object]',
-  // bounced: 'false',
-  // clientDate: '1522618889916',
-  // isBeacon: 'true'
   const { scriptId } = ctx.query
 
   if (!scriptId) {
@@ -75,10 +68,13 @@ router.post('/session/end', async function (ctx) {
   }
 
   const query = normalizeQuery(ctx.query)
-  console.log('query', query)
   try {
     let session = await getTrackingSession(ctx, scriptId)
-    await updateSession(query, session, query.clientDate)
+    const finishSessionAt = query.clientDate
+    await Session.update({ _id: session._id }, { $inc: { tabCount: -1 }})
+    session.tabCount--
+    await updateSession(query, session, finishSessionAt)
+    
   } catch (e) {
     console.log('WARNING => error updating session end:', e)
     ctx.status = 5000
@@ -88,8 +84,6 @@ router.post('/session/end', async function (ctx) {
 
   ctx.status = 200
   ctx.body = 'ok'
-
-
 })
 
 router.get('/cleanCookie/:scriptId', async function (ctx) {

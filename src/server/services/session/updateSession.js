@@ -18,9 +18,8 @@ module.exports = async function updateSession (sessionData, session, finishAt) {
   session.language = sessionData.language
   session.bounced = sessionData.bounced
 
-  if (finishAt) {
+  if (finishAt && session.tabCount < 1) {
     session.finishedAt = normalizeClientDate(new Date(finishAt))
   }
-
   return session.save()
 }

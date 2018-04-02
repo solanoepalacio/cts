@@ -28,26 +28,30 @@ module.exports = async function getTrackingSession (ctx, scriptId) {
   if (sessionToken) {
     // user has visited the same website before
     const { sessionId, deviceId } = jwt.verify(sessionToken, appConfig.token.secret)
-    session = await Session.findOne({ _id: sessionId }).exec()
-
-    console.log('session', session)
-
-    if (!session.finishedAt) {
-      // session hasn't finished (ex: user is opening a new tab)
-      return session
+    session = await Session.findOne({ _id: sessionId })
+      .populate('views clicks')
+      .exec()
+    
+    if (!session) {
+      throw new Error('sessionNotFound')
     }
 
-    // check if it's a static site reloading the script by loading a new
-    // page in the same session
-    const finishedAt = moment(session.finishedAt)
-    const difference = m.duration(
-      sessionTime.diff(finishedAt)
-    )
-      .asSeconds()
+    if (session.finishedAt !== null) {
+      // check if it's a static site reloading the script by loading a new
+      // page in the same session
+      const finishedAt = moment(session.finishedAt)
+      const difference = moment.duration(
+        sessionTime.diff(finishedAt)
+      )
+        .asSeconds()
 
-    if (difference < appConfig.behavior.reloadThreshold) {
-      // use last session
-      session.finishedAt = null
+      if (difference < appConfig.behavior.reloadThreshold) {
+        // use last session
+        console.log('for threshhold')
+        session.finishedAt = null
+      }
+    } 
+    if (!session.finishedAt) {
       return session.save()
     }
 

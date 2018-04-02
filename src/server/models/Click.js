@@ -13,7 +13,7 @@ const clickSchema = new mongoose.Schema(
       required: true
     },
     position: {
-      type: String
+      type: Object
     },
     elementData: {
       type: Object

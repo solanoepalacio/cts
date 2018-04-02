@@ -3,10 +3,11 @@
 const path = require('path')
 
 const Koa = require('koa')
-const mount = require('koa-mount')
 const cors = require('koa-cors')
+const mount = require('koa-mount')
 const serve = require('koa-static')
 const Logger = require('koa-logger')
+const noCache = require('koa-no-cache')
 const bodyParser = require('koa-bodyparser')
 
 module.exports = function initApp () {
@@ -14,7 +15,11 @@ module.exports = function initApp () {
 
   app.use(Logger())
 
-  app.use(cors())
+  app.use(cors({ credentials: true }))
+
+  app.use(
+    noCache({ paths: ['/public/(.*)'] })
+  )
 
   app.use(bodyParser())
 

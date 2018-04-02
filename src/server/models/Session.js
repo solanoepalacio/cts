@@ -32,6 +32,13 @@ const sessionSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'clicks'
     }],
+    tabCount: {
+      type: Number,
+      default: 0
+    },
+    lastTabClosedAt: {
+      type: Date
+    },
     windowWidth: Number,
     windowHeight: Number,
     referer: String,

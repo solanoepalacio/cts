@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9f4c8dc168eb8a3771bf"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8da1d78a48df1470ec53"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -30758,14 +30758,11 @@ function createAsyncAction(name, endpoint) {
         }
 
         var contentType = response.headers.get('Content-Type');
-        console.log('contentType', contentType);
         return contentType.toLowerCase().indexOf('application/json') !== -1 ? response.json() : response.text();
       }).then(function (payload) {
         if (!payload) return; // error swallowed
-        console.log('dispatching payload', payload);
         dispatch(storeActions[name + 'Success'](payload));
       }).catch(function (denialText) {
-        console.log('denialText', denialText);
         dispatch(storeActions[name + 'Failure']({ message: denialText }));
       });
     };
