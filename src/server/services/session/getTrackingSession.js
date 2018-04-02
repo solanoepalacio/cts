@@ -6,7 +6,7 @@ const Device = require('../../models/Device')
 const getLastSession = require('./getLastSession')
 const normalizeClientDate = require('./utils/normalizeClientDate')
 
-module.exports = async function getTrackingSession (ctx, scriptId) {
+module.exports = async function getTrackingSession (ctx, domainId) {
 
   // TODO : ...global tracking
   const appToken = ctx.cookies.get(appConfig.appToken)
@@ -17,7 +17,7 @@ module.exports = async function getTrackingSession (ctx, scriptId) {
   } else {
     // the user has visited a site with cts installed
   }
-  const sessionToken = ctx.cookies.get(scriptId)
+  const sessionToken = ctx.cookies.get(domainId)
 
   const clientDate = ctx.req.body && ctx.req.body.clientDate
   const sessionTime = normalizeClientDate(clientDate)
@@ -42,7 +42,7 @@ module.exports = async function getTrackingSession (ctx, scriptId) {
   const session = new Session({
     startedAt:  sessionTime,
     device: deviceId,
-    scriptId
+    domainId
   })
 
   return session.save()

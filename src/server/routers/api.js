@@ -18,9 +18,9 @@ router.get('/loader', async function (ctx) {
   const clientScriptTemplatePath = path.resolve(__dirname, '../static/clientScriptTemplate')
 
   const scriptTemplate = fs.readFileSync(clientScriptTemplatePath, 'utf-8')
-  const { scriptId } = ctx.state.user
+  const { domainId } = ctx.state.user
   const clientScript = scriptTemplate
-    .replace('{{scriptId}}', scriptId)
+    .replace('{{domainId}}', domainId)
     .replace('{{host}}', appConfig.host)
   
   ctx.type = 'text/plain'

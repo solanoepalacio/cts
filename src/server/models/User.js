@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    scriptId: String,
+    domainId: String,
     createdAt: Date,
     updatedAt: Date
   },
@@ -36,8 +36,8 @@ userSchema.pre('save', function (next) {
     this.password = this.encryptPassword(this.password, this.salt)
   }
   
-  if (!this.scriptId) {
-    this.scriptId = crypto.randomBytes(8).toString('hex')
+  if (!this.domainId) {
+    this.domainId = crypto.randomBytes(8).toString('hex')
   }
   next()
 })

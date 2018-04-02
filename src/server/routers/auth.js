@@ -65,6 +65,6 @@ module.exports = router
 function exposeUser(user) {
   return {
     _id: user._id.toString(),
-    scriptId: user.scriptId
+    domainId: user.domainId
   }
 }

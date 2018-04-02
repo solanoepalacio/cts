@@ -9,7 +9,7 @@
   } 
 
   const host = '{{{host}}}'
-  const scriptId = '{{{scriptId}}}'
+  const domainId = '{{{domainId}}}'
   const sessionId = '{{{sessionId}}}'
   const configEvents = '{{{configEvents}}}'
   
@@ -19,7 +19,7 @@
   }
   
   const session = {
-    scriptId: scriptId,
+    domainId: domainId,
     windowWidth: window.innerWidth,
     windowHeight: window.innerHeight,
     referrer: document.referrer,

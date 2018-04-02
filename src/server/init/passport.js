@@ -10,7 +10,7 @@ const localStrategy = new LocalStrategy({}, async (username, password, done) => 
   try {  
     const user = await User.findOne({ username },
       {
-        scriptId: 1,
+        domainId: 1,
         password: 1,
         salt: 1
       }

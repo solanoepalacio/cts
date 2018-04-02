@@ -8,22 +8,23 @@ const router = require('koa-router')()
 
 const Session = require('../models/Session')
 
-const updateSession = require('../services/session/updateSession')
 const getConfigEvents = require('../services/config/getEvents')
+const updateSession = require('../services/session/updateSession')
 const getTrackingSession = require('../services/session/getTrackingSession')
 
-router.get('/loader/:scriptId', async function (ctx) {
-  const { scriptId } = ctx.params
+router.get('/loader/:domainId', async function (ctx) {
+  const { domainId } = ctx.params
 
   // get and set tracking session
-  const session = await getTrackingSession(ctx, scriptId)
+  const session = await getTrackingSession(ctx, domainId)
 
   await Session.update({ _id: session._id }, { $inc: { tabCount: 1 }})
 
   /**
    * get user config events
    */
-  const configEvents = await getConfigEvents(scriptId)
+  const configEvents = await getConfigEvents(domainId)
+
   /**
    * generate script
    */
@@ -31,7 +32,7 @@ router.get('/loader/:scriptId', async function (ctx) {
   const template = fs.readFileSync(scriptTemplatePath, 'utf-8')
 
   const script = template
-    .replace('{{{scriptId}}}', `${scriptId}`)
+    .replace('{{{domainId}}}', `${domainId}`)
     .replace('{{{host}}}', `${appConfig.host}`)
     .replace('{{{sessionId}}}', `${session._id}`)
     .replace('{{{environment}}}', `${process.env.NODE_ENV}`)
@@ -47,7 +48,7 @@ router.get('/loader/:scriptId', async function (ctx) {
     deviceId: session.device.toString()
   }
   const newToken = jwt.sign(cookieData, appConfig.token.secret)
-  ctx.cookies.set(scriptId, newToken)
+  ctx.cookies.set(domainId, newToken)
 
   /**
    * respond
@@ -58,9 +59,9 @@ router.get('/loader/:scriptId', async function (ctx) {
 
 router.post('/session/save', async function (ctx) {
   const sessionData = ctx.request.body
-  const { scriptId } = sessionData
+  const { domainId } = sessionData
 
-  let session = await getTrackingSession(ctx, scriptId)
+  let session = await getTrackingSession(ctx, domainId)
   await updateSession(sessionData, session)
   ctx.status = 200
   ctx.body = {}
@@ -68,11 +69,11 @@ router.post('/session/save', async function (ctx) {
 })
 
 router.post('/session/end', async function (ctx) {
-  const { scriptId } = ctx.query
+  const { domainId } = ctx.query
 
   const query = normalizeQuery(ctx.query)
   try {
-    let session = await getTrackingSession(ctx, scriptId)
+    let session = await getTrackingSession(ctx, domainId)
 
     session = await Session.findOneAndUpdate(
       { _id: session._id },
@@ -93,14 +94,14 @@ router.post('/session/end', async function (ctx) {
   ctx.body = 'ok'
 })
 
-router.get('/cleanCookie/:scriptId', async function (ctx) {
-  const { scriptId } = ctx.params
-  if (!scriptId) {
+router.get('/cleanCookie/:domainId', async function (ctx) {
+  const { domainId } = ctx.params
+  if (!domainId) {
     ctx.status = 409
     ctx.body = 'ok'
     return
   }
-  ctx.cookies.set(scriptId, '', { maxAge: Date.now() })
+  ctx.cookies.set(domainId, '', { maxAge: Date.now() })
   ctx.status = 200
   ctx.body = 'ok'
 })

@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8da1d78a48df1470ec53"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "09bff62c51b0c8309cf7"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -30573,7 +30573,7 @@ var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.com
 
 var store = (0, _redux.createStore)((0, _reducers2.default)({
   auth: { valid: false, failed: false, userId: null, fetching: false },
-  user: { _id: null, scriptId: null },
+  user: { _id: null, domainId: null },
   config: { fetching: false, script: null }
 }), window.__state__, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default, loggerMiddleware)));
 
