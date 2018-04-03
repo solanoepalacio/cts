@@ -31,6 +31,7 @@ module.exports = function initApp () {
   const port = appConfig.port || 5000
   
   app.listen(5000)
+  console.log('\n')
   console.log('App is listening on port', port)
   console.log('==============================')
 

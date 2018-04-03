@@ -5,10 +5,11 @@ const mongoose = require('mongoose')
 const sessionSchema = new mongoose.Schema(
   {
     name: String,
-    label: String,
+    baseUrl: String,
     config: {
       events: [
         {
+          type: Object,
           type: {
             type: String,
             enum: ['click', 'keyDown','scrollBottom', 'spendTime', 'textInput'] // see video? do a certain combination of things?

@@ -7,7 +7,7 @@ const Session = require('../../models/Session')
 
 module.exports = async function getLastSession (sessionToken, sessionTime) {
   // user has visited the same website before
-  const { sessionId, deviceId } = jwt.verify(sessionToken, appConfig.token.secret)
+  const { sessionId } = jwt.verify(sessionToken, appConfig.token.secret)
   const session = await Session.findOne({ _id: sessionId })
     .populate('views clicks')
     .exec()

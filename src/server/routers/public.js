@@ -8,7 +8,7 @@ const router = require('koa-router')()
 
 const Session = require('../models/Session')
 
-// const getConfigEvents = require('../services/config/getEvents')
+const getConfigEvents = require('../services/config/getEvents')
 const updateSession = require('../services/session/updateSession')
 const getTrackingSession = require('../services/session/getTrackingSession')
 
@@ -23,7 +23,8 @@ router.get('/loader/:domainId', async function (ctx) {
   /**
    * get user config events
    */
-  // const configEvents = await getConfigEvents(domainId)
+  const domainEvents = await getConfigEvents(domainId)
+
 
   /**
    * generate script
@@ -31,7 +32,7 @@ router.get('/loader/:domainId', async function (ctx) {
   const scriptTemplatePath = path.resolve(__dirname, '../static/trackingTemplate')
   const template = fs.readFileSync(scriptTemplatePath, 'utf-8')
 
-  const script = template
+  let script = template
     .replace('{{{domainId}}}', `${domainId}`)
     .replace('{{{host}}}', `${appConfig.host}`)
     .replace('{{{sessionId}}}', `${session._id}`)
@@ -40,15 +41,21 @@ router.get('/loader/:domainId', async function (ctx) {
     // .replace('{{{configEvents}}}', ) TODO: get from client config
 
 
+  if (domainEvents) {
+    script = script.replace('{{{configEvents}}}', JSON.stringify(domainEvents))
+  }
+
+
   /**
    * cookie
    */
-  const cookieData = {
-    sessionId: session._id.toString(),
-    deviceId: session.device.toString()
-  }
-  const newToken = jwt.sign(cookieData, appConfig.token.secret)
-  ctx.cookies.set(domainId, newToken)
+  const { secret } = appConfig.token
+
+  const newSessionToken = jwt.sign(session._id, appConfig.token.secret)
+  ctx.cookies.set(domainId, newSessionToken)
+  
+  const newDeviceToken = jwt.sign(session.device, appConfig.token.secret)
+  ctx.cookies.set(newDeviceToken, appConfig.appToken)
 
   /**
    * respond

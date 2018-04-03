@@ -10,11 +10,38 @@
   const host = '{{{host}}}'
   const domainId = '{{{domainId}}}'
   const sessionId = '{{{sessionId}}}'
-  const configEvents = '{{{configEvents}}}'
   
+  
+  const configEvents = '{{{configEvents}}}'
+
+  let events
+  if (configEvents !== '{{{configEvents}}}') {
+    try {
+      events = JSON.parse(configEvents)
+    } catch (error) {
+      events = false
+      // TODO => log error to server.
+    }
+  } else {
+    events = false
+  }
+
+  if (events) {
+    // start loading events async
+    window.CTSconfigEvents = events
+    const eventsScript = document.createElement('script')
+
+    eventsScript.setAttribute('async', true)
+    eventsScript.setAttribute('src', host + '/public/loader/events')
+
+    const firstScript = document.getElementsByTagName('script')[0]
+
+    firstScript.parentNode.insertBefore(eventsScript, firstScript)
+  }
+
   let bounceTimeout = '{{{bounceTimeout}}}' // from config (how much time to consider not bouncing)
   if (bounceTimeout === '{{{bounceTimeout}}}') {
-    bounceTimeout = 1 // segs
+    bounceTimeout = 20 // segs
   }
   
   const session = {
@@ -173,7 +200,6 @@
     })
     return keys
   }
-
 })()
 
 
