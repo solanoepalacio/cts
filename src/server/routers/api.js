@@ -24,8 +24,8 @@ router.get('/loader', async function (ctx) {
   const clientScript = scriptTemplate
     .replace('{{domainId}}', domainId)
     .replace('{{host}}', appConfig.host)
-  
-  ctx.set = { "Content-Type": "text/plain" }
+
+  ctx.set = { 'Content-Type': 'text/plain' }
   ctx.status = 200
   ctx.body = clientScript
 })

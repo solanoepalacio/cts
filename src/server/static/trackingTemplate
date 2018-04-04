@@ -1,17 +1,16 @@
 'use strict'
 
-!(function () {
+function trackingTemplate () {
   // for developers:
   let _ENV = '{{{environment}}}'
   if (_ENV === '{{{environment}}}') {
     _ENV === 'production'
-  } 
+  }
 
   const host = '{{{host}}}'
   const domainId = '{{{domainId}}}'
   const sessionId = '{{{sessionId}}}'
-  
-  
+
   const configEvents = '{{{configEvents}}}'
 
   let events
@@ -27,8 +26,9 @@
   }
 
   if (events) {
+    console.log('events', events)
     // start loading events async
-    window.CTSconfigEvents = events
+    window.CTSdata = { events }
     const eventsScript = document.createElement('script')
 
     eventsScript.setAttribute('async', true)
@@ -43,7 +43,7 @@
   if (bounceTimeout === '{{{bounceTimeout}}}') {
     bounceTimeout = 20 // segs
   }
-  
+
   const session = {
     domainId: domainId,
     windowWidth: window.innerWidth,
@@ -58,7 +58,7 @@
   }
 
   session.__proto__.addClick = addClickToSession.bind(session)
-  
+
   function addClickToSession (clickEvent) {
     this.clicks.push(
       {
@@ -73,7 +73,7 @@
   }
 
   session.__proto__.addView = addViewToSession.bind(session)
-  
+
   function addViewToSession (hashChangeEvent) {
     this.views.push(
       {
@@ -90,9 +90,8 @@
     // ... TODO: depends on config
   }
 
-
   session.__proto__.save = saveSession.bind(session)
-  
+
   function saveSession (fallback) {
     if (!fallback) {
       // fallback is thruthy when navigator.sendBeacon is not present
@@ -105,40 +104,39 @@
     let data = Object.assign({}, this)
     // used server-side to calculate the timezone
     data.clientDate = Date.now()
-    
+
     const options = {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
       headers: {
-        "Content-Type": 'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     }
 
     fetch(host + '/public/session/save', options)
-    .then((response) => {
-      if (_ENV !== 'production') {
-        console.log('[session-save] response status:', response.status)
-        return response.json()
-      }
-      return Promise.resolve(false)
-    })
-    .then((response) => {
-      if (response) {
-        console.log('[session-save] response:', response)
-      }
-    })
-    .catch((error) => {
-      if (_ENV !== 'production') {
-        console.log('[session-save] request Error', error)
-      }
-    })
-
+      .then((response) => {
+        if (_ENV !== 'production') {
+          console.log('[session-save] response status:', response.status)
+          return response.json()
+        }
+        return Promise.resolve(false)
+      })
+      .then((response) => {
+        if (response) {
+          console.log('[session-save] response:', response)
+        }
+      })
+      .catch((error) => {
+        if (_ENV !== 'production') {
+          console.log('[session-save] request Error', error)
+        }
+      })
   }
 
   session.__proto__.end = endSession.bind(session)
-  
+
   function endSession () {
     this.clientDate = Date.now() // used server-side to calculate timezone
     if (navigator.sendBeacon) {
@@ -163,7 +161,7 @@
         mode: 'cors',
         credentials: 'include',
         headers: {
-          "Content-Type": 'application/json'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(data, keys)
       }
@@ -177,7 +175,6 @@
   }
 
   window.setTimeout(session.save, bounceTimeout * 1000)
-
 
   window.onunload = () => {
     session.end()
@@ -200,6 +197,5 @@
     })
     return keys
   }
-})()
-
-
+}
+trackingTemplate()

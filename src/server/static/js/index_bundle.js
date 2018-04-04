@@ -60,7 +60,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ca0b4f6406a9b98830ff"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b6315560c4cc030f00a3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -14537,6 +14537,9 @@ var _auth2 = _interopRequireDefault(_auth);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var actions = _auth2.default.actions;
+
+console.log('actions', actions);
+
 function getAuthReducer(initialState) {
   return function authReducer() {
     var authState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
@@ -14564,6 +14567,33 @@ function getAuthReducer(initialState) {
         });
 
       case actions.authAttempt:
+        return Object.assign({}, authState, {
+          valid: false,
+          failed: false,
+          fetching: true,
+          userId: undefined,
+          errorMessage: null
+        });
+
+      case actions.registerSuccess:
+        return Object.assign({}, authState, {
+          valid: true,
+          failed: false,
+          fetching: false,
+          userId: payload.userId,
+          errorMessage: null
+        });
+
+      case actions.registerFailure:
+        return Object.assign({}, authState, {
+          valid: false,
+          failed: true,
+          fetching: false,
+          userId: undefined,
+          errorMessage: payload.message
+        });
+
+      case actions.registerAttempt:
         return Object.assign({}, authState, {
           valid: false,
           failed: false,
@@ -31607,10 +31637,10 @@ var actionCreators = _config2.default.actionCreators;
 var Config = function (_React$Component) {
   _inherits(Config, _React$Component);
 
-  function Config(props) {
+  function Config() {
     _classCallCheck(this, Config);
 
-    return _possibleConstructorReturn(this, (Config.__proto__ || Object.getPrototypeOf(Config)).call(this, props));
+    return _possibleConstructorReturn(this, (Config.__proto__ || Object.getPrototypeOf(Config)).apply(this, arguments));
   }
 
   _createClass(Config, [{

@@ -1,8 +1,5 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
-
 const router = require('koa-router')()
 
 const staticRouter = require('./static')

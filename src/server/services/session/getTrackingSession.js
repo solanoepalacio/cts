@@ -9,16 +9,15 @@ const getLastSession = require('./getLastSession')
 const normalizeClientDate = require('./utils/normalizeClientDate')
 
 module.exports = async function getTrackingSession (ctx, domainId) {
-  
   const appToken = ctx.cookies.get(appConfig.appToken)
-  
-  let device
+
+  let deviceId
   if (appToken) {
-    device = JSON.parse(
-      jwt.verify(appToken, appConfig.token.secret)
-    )
+    const tokenData = jwt.verify(appToken, appConfig.token.secret)
+    deviceId = tokenData.deviceId
   } else {
-    device = await ( new Device () ).save()
+    const device = await (new Device()).save()
+    deviceId = device._id
   }
 
   const sessionToken = ctx.cookies.get(domainId)
@@ -31,15 +30,16 @@ module.exports = async function getTrackingSession (ctx, domainId) {
 
     if (!lastSession.finishedAt) {
       // last session hasn't finished yet
-      return lastSession
+      return { session: lastSession, deviceId }
     }
   }
 
   const session = new Session({
-    startedAt:  sessionTime,
-    device: device._id,
+    startedAt: sessionTime,
+    device: deviceId,
     domain: domainId
   })
+  await session.save()
 
-  return session.save()
+  return { session, deviceId }
 }

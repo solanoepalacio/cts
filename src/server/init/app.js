@@ -18,7 +18,7 @@ module.exports = function initApp () {
   app.use(cors({ credentials: true }))
 
   app.use(
-    noCache({ paths: ['/public/(.*)'] })
+    noCache({ paths: ['/public/session', '/public/loader'] })
   )
 
   app.use(bodyParser())
@@ -29,7 +29,7 @@ module.exports = function initApp () {
   app.use(router.routes())
 
   const port = appConfig.port || 5000
-  
+
   app.listen(5000)
   console.log('\n')
   console.log('App is listening on port', port)

@@ -2,9 +2,9 @@
 
 const Domain = require('../../models/Domain')
 
-module.exports = async function (domainId)  {
-  return await Domain.findOne(
-    { 
+module.exports = async function getDomainEvents (domainId) {
+  return Domain.findOne(
+    {
       _id: domainId
     }
     // {
