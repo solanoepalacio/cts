@@ -11,34 +11,30 @@ import Script from './Script'
 const { actionCreators } = configActions
 
 class Config extends React.Component {
-  constructor (props) {
-    super(props)
-  }
-
   componentWillMount () {
     this.props.clientScriptRequest()
   }
 
   render () {
     const { config } = this.props
-    const script = config && config.script || null
+    const script = (config && config.script) || null
     return (
-      <div id="config-component" >
-        <div className="card section-header">
+      <div id='config-component' >
+        <div className='card section-header'>
           Configuration:
         </div>
-        <div className="card">
+        <div className='card'>
           Config controllers will go here
         </div>
-        <div className="card">
-          <span className="btn">
+        <div className='card'>
+          <span className='btn'>
             save config
           </span>
-          <span className="btn">
+          <span className='btn'>
             update script
           </span>
         </div>
-        <Script script={script}/>
+        <Script script={script} />
       </div>
     )
   }

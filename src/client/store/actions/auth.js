@@ -1,6 +1,6 @@
 'use strict'
 
-import createAsyncActions from "./utils/createAsyncActions";
+import createAsyncActions from './utils/createAsyncActions'
 
 const { actions, actionCreators } = createAsyncActions(
   [

@@ -3,9 +3,10 @@
 import authActions from '../actions/auth'
 
 const { actions } = authActions
+console.log('actions', actions)
 
 export default function getAuthReducer (initialState) {
-  return function authReducer (authState = initialState, { type, payload}) {
+  return function authReducer (authState = initialState, { type, payload }) {
     switch (type) {
       case actions.authSuccess:
         return Object.assign({}, authState, {
@@ -15,7 +16,7 @@ export default function getAuthReducer (initialState) {
           userId: payload.userId,
           errorMessage: null
         })
-      
+
       case actions.authFailure:
         return Object.assign({}, authState, {
           valid: false,
@@ -34,11 +35,38 @@ export default function getAuthReducer (initialState) {
           errorMessage: null
         })
 
+      case actions.registerSuccess:
+        return Object.assign({}, authState, {
+          valid: true,
+          failed: false,
+          fetching: false,
+          userId: payload.userId,
+          errorMessage: null
+        })
+
+      case actions.registerFailure:
+        return Object.assign({}, authState, {
+          valid: false,
+          failed: true,
+          fetching: false,
+          userId: undefined,
+          errorMessage: payload.message
+        })
+
+      case actions.registerAttempt:
+        return Object.assign({}, authState, {
+          valid: false,
+          failed: false,
+          fetching: true,
+          userId: undefined,
+          errorMessage: null
+        })
+
       case actions.logoutAttempt:
         return Object.assign({}, authState, {
-          fetching: true          
+          fetching: true
         })
-      
+
       case actions.logoutSuccess:
         return Object.assign({}, authState, {
           valid: false,
