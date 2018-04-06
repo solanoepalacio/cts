@@ -7,7 +7,7 @@ const cors = require('koa-cors')
 const mount = require('koa-mount')
 const serve = require('koa-static')
 const Logger = require('koa-logger')
-const noCache = require('koa-no-cache')
+// const noCache = require('koa-no-cache')
 const bodyParser = require('koa-bodyparser')
 
 module.exports = function initApp () {
@@ -17,9 +17,9 @@ module.exports = function initApp () {
 
   app.use(cors({ credentials: true }))
 
-  app.use(
-    noCache({ paths: ['/public/session', '/public/loader'] })
-  )
+  // app.use(
+  //   noCache({ paths: ['/public/session', '/public/loader'] })
+  // )
 
   app.use(bodyParser())
 

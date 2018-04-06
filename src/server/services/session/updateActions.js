@@ -10,7 +10,7 @@ module.exports = async function updateActions (sessionData, session) {
 
 const actions = {
   views: require('../../models/View'),
-  // events: require('../../models/Event'),
+  events: require('../../models/Event'),
   clicks: require('../../models/Click')
 }
 
@@ -32,7 +32,8 @@ async function updateCollection (collectionName, newSession, existingSession) {
     }
 
     entity.session = existingSession._id
-    const newAction = await ( new actions[collectionName](entity) ).save()
+
+    const newAction = await (new actions[collectionName](entity)).save()
     existingSession[collectionName].push(newAction._id)
   }
   return existingSession

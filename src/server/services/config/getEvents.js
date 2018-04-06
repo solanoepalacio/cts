@@ -3,15 +3,19 @@
 const Domain = require('../../models/Domain')
 
 module.exports = async function getDomainEvents (domainId) {
-  return Domain.findOne(
+  const { config } = await Domain.findOne(
     {
       _id: domainId
+    },
+    {
+      config: 1
     }
-    // {
-    //   'config.events': 1,
-    //   _id: 0
-    // }
   )
+    .populate({
+      path: 'config.event_types',
+      model: 'event_types'
+    })
     .lean()
     .exec()
+  return config.event_types
 }

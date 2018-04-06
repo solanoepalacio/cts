@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
       ]
     },
     salt: {
-      type: String,
+      type: String
     },
     password: {
       type: String,
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
 )
 
 userSchema.methods.encryptPassword = function (password, salt) {
-  const encryptedPassword = crypto.createHmac('sha256', salt).update(password).digest('hex')
+  return crypto.createHmac('sha256', salt).update(password).digest('hex')
 }
 
 userSchema.pre('save', async function (next) {
@@ -45,15 +45,14 @@ userSchema.pre('save', async function (next) {
     this.salt = crypto.randomBytes(12).toString('hex')
     this.password = this.encryptPassword(this.password, this.salt)
   }
-  
+
   if (!this.domains.length) {
     const domain = new Domain({ user: this._id })
     await domain.save()
+    console.log('domain', domain)
     this.domains.push(domain._id)
   }
   next()
 })
-
-
 
 module.exports = mongoose.model('users', userSchema)

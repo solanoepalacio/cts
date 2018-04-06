@@ -1,0 +1,17 @@
+// 'use strict'
+// click event example config
+// {
+//   "type" : "click",
+//   "label" : "click en un boton",
+//   "unique" : false,
+//   "multi": false, // (cancel after it happened once)
+//   "bubbles" : false,
+//   "dataId" : "5ac45c5e0a09057cee98dfbf",
+//   "uri" : {
+//      match: '/',
+//      includeChildren: false
+//    },
+// }
+// () => {
+
+// }

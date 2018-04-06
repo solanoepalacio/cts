@@ -41,7 +41,7 @@ router.post('/login', async function (ctx) {
       return
     } else if (error) {
       console.error('Error authenticathing user: ', error.message || error)
-    } 
+    }
     ctx.status = 401
     ctx.type = 'text/plain'
     ctx.body = 'The user/password combination is incorrect. Try again.'
@@ -62,8 +62,7 @@ router.get('/status', accessMiddleware, async function (ctx) {
 
 module.exports = router
 
-function exposeUser(user) {
-  console.log('user', user)
+function exposeUser (user) {
   return {
     // // WHEN the ui is ready to use many domains, change this:
     _id: user._id.toString(),

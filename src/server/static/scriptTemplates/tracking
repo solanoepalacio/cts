@@ -4,12 +4,19 @@ function trackingTemplate () {
   // for developers:
   let _ENV = '{{{environment}}}'
   if (_ENV === '{{{environment}}}') {
-    _ENV === 'production'
+    _ENV = 'production'
   }
+
+  const consoleLog = console.log
+  const wrappedLog = function (env, ...logs) {
+    if (env !== 'production') {
+      consoleLog(...logs)
+    }
+  }
+  console.log = wrappedLog.bind(console, _ENV)
 
   const host = '{{{host}}}'
   const domainId = '{{{domainId}}}'
-  const sessionId = '{{{sessionId}}}'
 
   const configEvents = '{{{configEvents}}}'
 
@@ -25,23 +32,22 @@ function trackingTemplate () {
     events = false
   }
 
-  if (events) {
-    console.log('events', events)
-    // start loading events async
-    window.CTSdata = { events }
-    const eventsScript = document.createElement('script')
+  // if (events) {
+  //   // start loading events async
+  //   window.CTSdata = { events }
+  //   const eventsScript = document.createElement('script')
 
-    eventsScript.setAttribute('async', true)
-    eventsScript.setAttribute('src', host + '/public/loader/events')
+  //   eventsScript.setAttribute('async', true)
+  //   eventsScript.setAttribute('src', host + '/public/loader/events')
 
-    const firstScript = document.getElementsByTagName('script')[0]
+  //   const firstScript = document.getElementsByTagName('script')[0]
 
-    firstScript.parentNode.insertBefore(eventsScript, firstScript)
-  }
+  //   firstScript.parentNode.insertBefore(eventsScript, firstScript)
+  // }
 
   let bounceTimeout = '{{{bounceTimeout}}}' // from config (how much time to consider not bouncing)
   if (bounceTimeout === '{{{bounceTimeout}}}') {
-    bounceTimeout = 20 // segs
+    bounceTimeout = 4 // segs
   }
 
   const session = {
@@ -51,8 +57,9 @@ function trackingTemplate () {
     referrer: document.referrer,
     platform: navigator.platform,
     language: navigator.language,
+    eventTypes: events,
     clicks: [],
-    events: [], // TODO: get event names from user config and render them where necessary in the script
+    events: [],
     views: [], // paths
     bounced: true
   }
@@ -86,21 +93,24 @@ function trackingTemplate () {
 
   session.__proto__.addEvent = addEventToSession.bind(session)
 
-  function addEventToSession (event, type, name) {
-    // ... TODO: depends on config
+  function addEventToSession ({ eventType, timestamp, url }) {
+    this.events.push(
+      {
+        url,
+        eventType,
+        timestamp
+      }
+    )
   }
 
   session.__proto__.save = saveSession.bind(session)
 
-  function saveSession (fallback) {
-    if (!fallback) {
-      // fallback is thruthy when navigator.sendBeacon is not present
-      // and so the session is saved when it starts and periodically
+  function saveSession (fallbackSave) {
+    if (!fallbackSave) {
       this.bounced = false
-    } else {
-      // keep saving every 120 seconds
-      setTimeout(this.save, 120 * 1000)
     }
+    // keep saving every 120 seconds
+    setTimeout(this.save, 120 * 1000)
     let data = Object.assign({}, this)
     // used server-side to calculate the timezone
     data.clientDate = Date.now()
@@ -196,6 +206,119 @@ function trackingTemplate () {
       keys.push(key)
     })
     return keys
+  }
+
+  if (!session.eventTypes) {
+    return
+  }
+
+  function createEvents (eventSetters) {
+    const { eventTypes } = session
+    for (const event of eventTypes) {
+      const { type } = event
+      eventSetters[type](event)
+    }
+  }
+
+  createEvents({
+    click: function (eventConfig) {
+      if (!checkMatchingPath) {
+        console.log('no matching path')
+        return
+      }
+      const elements = getCtsElements(eventConfig._id)
+
+      if (!elements || !elements.length) {
+        // TODO:
+        // fetch(// notifications::: target event not found in path...)
+        window.alert('targetElement not found for event:', eventConfig)
+        console.warn(eventConfig)
+        return
+      }
+
+      if (eventConfig.unique && elements.length > 1) {
+        // TODO:
+        // fetch(// notifications::: events conflict in path...)
+        window.alert('event conflict exists for this path')
+        return
+      }
+
+      for (const element of elements) {
+        const listener = logClickEvent.bind(element, eventConfig)
+        eventConfig.listener = listener
+        element.addEventListener('click', listener, { capture: true })
+        // see capture option at:
+        // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener#Matching_event_listeners_for_removal
+      }
+      function logClickEvent (eventConfig, event) {
+        console.log('adding event to session', eventConfig)
+        session.addEvent({
+          eventType: eventConfig._id,
+          timestamp: Number(new Date()),
+          url: document.location.href
+        })
+
+        if (!eventConfig.bubbles) {
+          event.preventDefault && event.preventDefault()
+          event.stopPropagation && event.stopPropagation()
+        }
+
+        if (!eventConfig.multi) {
+          this.removeEventListener('click', eventConfig.listener, { capture: true })
+        }
+      }
+    },
+
+    scrollBottom: function (eventConfig) {
+      if (!checkMatchingPath) {
+        return
+      }
+
+      const elements = getCtsElements(eventConfig._id)
+      if (!elements || !elements.length) {
+        // notify error
+      }
+
+      if (eventConfig.unique && elements.length > 1) {
+        // notify conflict
+      }
+
+      // for (const element of elements) {
+
+      // }
+    }
+  })
+
+  function getCtsElements (dataId) {
+    const options = [
+      `div[data-cts="${dataId}"]`,
+      `span[data-cts="${dataId}"]`,
+      `.cts-${dataId}`,
+      `#cts-${dataId}`
+    ]
+    for (const selector of options) {
+      const nodeList = document.querySelectorAll(selector)
+      if (nodeList.length) {
+        return nodeList
+      }
+    }
+    return null
+  }
+
+  function checkMatchingPath (eventConfig) {
+    const { match, includeChildren } = eventConfig
+    const currentPath = document.location.pathName || window.location.pathName
+    const currentPathVariant = currentPath.replace(/\//g, ' ').trim().replace(' ', '/')
+
+    if (
+      currentPath !== match &&
+  currentPathVariant !== match &&
+  (!includeChildren || !currentPath.includes(match))
+    ) {
+      return false// event does not belong to this path.
+      // TODO => Call events() on hash change (and remove unnecessary listeners)
+    }
+    return true
   }
 }
 trackingTemplate()

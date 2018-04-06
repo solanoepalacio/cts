@@ -18,12 +18,7 @@ router.get('/cleanCookie/:domainId', async function (ctx) {
 router.use(noCache({
   paths: ['/session/*', '/loader/*']
 }))
-// router.use(async function (ctx, next) {
-//   // ctx.set('cach')
-//   ctx.set('Cache-Control', 'no-cache')
-//   next()
-//   // this.set('Connection', 'keep-alive');
-// })
+
 const sessionRouter = require('./session')
 router.use(sessionRouter.routes())
 
