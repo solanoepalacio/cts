@@ -8,7 +8,7 @@ const router = new Router({ prefix: '/event' })
 
 router.put('/success', async function (ctx) {
   // notifies that an event is working at a certain path
-  let { eventTypeId, urlPath } = ctx.query.body
+  let { eventTypeId, urlPath } = ctx.request.body
 
   let { active, inactivePaths } = await EventType.findOne(
     {
@@ -56,7 +56,7 @@ router.put('/success', async function (ctx) {
 })
 
 router.put('/failure', async function (ctx) {
-  let { eventTypeId, urlPath } = ctx.query.body
+  let { eventTypeId, urlPath } = ctx.request.body
 
   const eventType = await EventType.findOne({ _id: eventTypeId }).exec()
 
@@ -69,6 +69,7 @@ router.put('/failure', async function (ctx) {
   })
 
   if (pathIsInactive) {
+    console.log('path is already inactive for this event')
     if (eventType.active) {
       eventType.active = false
       await eventType.save()
@@ -77,9 +78,11 @@ router.put('/failure', async function (ctx) {
     ctx.body = 'ok'
     return
   }
+
   eventType.inactivePaths.push(urlPath)
   eventType.active = false
-
+  await eventType.save()
+  console.log('inactivePaths', eventType.inactivePaths)
   ctx.body = 200
   ctx.body = 'ok'
 })
