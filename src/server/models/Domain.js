@@ -9,7 +9,7 @@ const domainSchema = new mongoose.Schema(
     name: String,
     baseUrl: String,
     config: {
-      events: [
+      eventTypes: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'event_types'

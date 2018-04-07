@@ -6,7 +6,13 @@ const eventTypeSchema = new mongoose.Schema(
   {
     type: {
       type: String,
-      enum: ['click', 'keyDown', 'scrollBottom', 'spendTime', 'textInput'] // see video? do a certain combination of things?
+      enum: [
+        'click',
+        'keyDown',
+        'scrollBottom',
+        'spendTime',
+        'textInput'
+      ]
     },
     label: String,
     unique: Boolean,
@@ -15,7 +21,14 @@ const eventTypeSchema = new mongoose.Schema(
     uri: {
       match: String,
       includeChildren: Boolean
-    }
+    },
+    active: {
+      type: Boolean,
+      default: true
+    },
+    inactivePaths: [{
+      type: String
+    }]
     // TODO => funnel events
     // funnels: {
     //   type: mongoose.Schema.Types.ObjectId,

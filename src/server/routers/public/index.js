@@ -25,4 +25,7 @@ router.use(sessionRouter.routes())
 const loaderRouter = require('./loader')
 router.use(loaderRouter.routes())
 
+const eventRouter = require('./event')
+router.use(eventRouter.routes())
+
 module.exports = router

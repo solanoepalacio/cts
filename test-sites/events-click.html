@@ -14,7 +14,44 @@
     <label>multi: true</label>
     <button>test button</button>
   </div>
+
+  <div data-cts="5ac85a61d8193b16872ab416">
+    <label>unique: true && success</label>
+    <button>test button</button>
+  </div>
+  <div>
+    <label>unique; false</label>
+    <div data-cts="5ac85a52d8193b16872ab415">
+      <button>test 1</button>
+    </div>
+    <div data-cts="5ac85a52d8193b16872ab415">
+      <button>test 2</button>
+    </div>
+  </div>
+
+  <div>
+    <label>bubbles: false</label>
+    <div onclick="logClick()">
+      <div data-cts="5ac85b46d8193b16872ab417">
+        <button>test</button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <label>bubbles: true</label>
+    <div onclick="logClick()">
+      <div data-cts="5ac85b53d8193b16872ab418">
+        <button>test</button>
+      </div>
+    </div>
+  </div>
+
+
 </body>
+<script>
+  function logClick (e) { console.log('a wrapping div was clicked, element')}
+</script>
 <script>
  !(function(h,e,a,t,m,p,s){ if(h.htmp)return;p=e.createElement(a);p.async=!0; p.src=t+m;s=e.getElementsByTagName(a)[0]; s.parentNode.insertBefore(p,s);h.htmp=!0; })(window,document,'script','http://localhost:5000/public/loader/',"5ac45c5e0a09057cee98dfc0");
 </script>

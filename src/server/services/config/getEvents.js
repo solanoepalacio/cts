@@ -12,10 +12,10 @@ module.exports = async function getDomainEvents (domainId) {
     }
   )
     .populate({
-      path: 'config.event_types',
+      path: 'config.eventTypes',
       model: 'event_types'
     })
     .lean()
     .exec()
-  return config.event_types
+  return config.eventTypes
 }
