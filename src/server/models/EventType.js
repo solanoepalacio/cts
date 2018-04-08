@@ -26,6 +26,7 @@ const eventTypeSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    loadedAt: Date,
     inactivePaths: [{
       type: String
     }]

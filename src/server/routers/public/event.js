@@ -10,13 +10,14 @@ router.put('/success', async function (ctx) {
   // notifies that an event is working at a certain path
   let { eventTypeId, urlPath } = ctx.request.body
 
-  let { active, inactivePaths } = await EventType.findOne(
+  let { active, inactivePaths, loadedAt } = await EventType.findOne(
     {
       _id: eventTypeId
     },
     {
       inactivePaths: 1,
-      active: 1
+      active: 1,
+      loadedAt: 1
     }
   )
     .lean()
@@ -40,12 +41,16 @@ router.put('/success', async function (ctx) {
     active = true
   }
 
+  if (!loadedAt) {
+    loadedAt = new Date()
+  }
+
   await EventType.update(
     {
       _id: eventTypeId
     },
     {
-      $set: { active, inactivePaths }
+      $set: { active, inactivePaths, loadedAt }
     }
   )
     .lean()
@@ -69,7 +74,7 @@ router.put('/failure', async function (ctx) {
   })
 
   if (pathIsInactive) {
-    console.log('path is already inactive for this event')
+    // path is already inactive for this event
     if (eventType.active) {
       eventType.active = false
       await eventType.save()
@@ -82,7 +87,6 @@ router.put('/failure', async function (ctx) {
   eventType.inactivePaths.push(urlPath)
   eventType.active = false
   await eventType.save()
-  console.log('inactivePaths', eventType.inactivePaths)
   ctx.body = 200
   ctx.body = 'ok'
 })
