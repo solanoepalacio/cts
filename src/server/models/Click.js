@@ -3,8 +3,8 @@
 const mongoose = require('mongoose')
 
 const clickSchema = new mongoose.Schema(
-  { 
-    session:  {
+  {
+    session: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'sessions'
     },
@@ -20,7 +20,7 @@ const clickSchema = new mongoose.Schema(
     },
     timestamp: Number,
     createdAt: Date,
-    updatedAt: Date,
+    updatedAt: Date
   },
   {
     collection: 'clicks',

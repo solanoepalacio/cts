@@ -14,6 +14,12 @@ const domainSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: 'event_types'
         }
+      ],
+      funnels: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'funnel_configs'
+        }
       ]
     },
     createdAt: Date,

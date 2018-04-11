@@ -3,8 +3,8 @@
 const mongoose = require('mongoose')
 
 const viewSchema = new mongoose.Schema(
-  { 
-    session:  {
+  {
+    session: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'sessions'
     },
@@ -17,7 +17,7 @@ const viewSchema = new mongoose.Schema(
     },
     timestamp: Number,
     createdAt: Date,
-    updatedAt: Date,
+    updatedAt: Date
   },
   {
     collection: 'views',

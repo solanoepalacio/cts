@@ -4,6 +4,10 @@ const mongoose = require('mongoose')
 
 const eventTypeSchema = new mongoose.Schema(
   {
+    domain: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'domains'
+    },
     type: {
       type: String,
       enum: [
@@ -14,10 +18,10 @@ const eventTypeSchema = new mongoose.Schema(
         'textInput'
       ]
     },
+    value: Number,
     label: String,
     unique: Boolean,
     bubbles: Boolean,
-    dataId: String,
     uri: {
       match: String,
       includeChildren: Boolean
@@ -27,25 +31,16 @@ const eventTypeSchema = new mongoose.Schema(
       default: true
     },
     loadedAt: Date,
-    inactivePaths: [{
-      type: String
-    }]
-    // TODO => funnel events
-    // funnels: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'funnels'
-    // }
-    // note: maybe funnels should point to events instead of the other way arround
+    inactivePaths: [
+      {
+        type: String
+      }
+    ]
   },
   {
     collection: 'event_types',
     timestamps: true
   }
 )
-
-eventTypeSchema.pre('save', function (next) {
-  // TODO => fill the label if not available
-  next()
-})
 
 module.exports = mongoose.model('event_types', eventTypeSchema)

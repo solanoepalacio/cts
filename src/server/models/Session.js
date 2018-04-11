@@ -20,18 +20,24 @@ const sessionSchema = new mongoose.Schema(
       ref: 'devices',
       required: true
     },
-    views: [{
-      type: mongoose.SchemaTypes.ObjectId,
-      ref: 'views'
-    }],
-    events: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'events'
-    }],
-    clicks: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'clicks'
-    }],
+    views: [
+      {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'views'
+      }
+    ],
+    events: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'events'
+      }
+    ],
+    clicks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'clicks'
+      }
+    ],
     tabCount: {
       type: Number,
       default: 0

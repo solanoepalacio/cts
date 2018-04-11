@@ -1,13 +1,11 @@
 'use strict'
 
 const mongoose = require('mongoose')
-const crypto = require('crypto')
 
 const deviceSchema = new mongoose.Schema(
   {
-    createdAt: Date
-  },
-  {
+    platform: String,
+    createdAt: Date,
     updatedAt: Date
   },
   {
