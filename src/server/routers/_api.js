@@ -30,4 +30,7 @@ router.get('/loader', async function (ctx) {
   ctx.body = clientScript
 })
 
-module.exports = router
+module.exports = {
+  router,
+  prefix: '/api'
+}

@@ -1,17 +1,22 @@
 'use strict'
 
-const router = require('koa-router')()
+const fs = require('fs')
+const path = require('path')
 
-const staticRouter = require('./static')
-router.use('/', staticRouter.routes())
+const mainRouter = require('koa-router')()
 
-const authRouter = require('./auth')
-router.use('/auth', authRouter.routes())
+fs.readdirSync(__dirname).forEach((fileName) => {
+  if (fileName.startsWith('_')) {
+    const routerConfig = require(path.join(__dirname, fileName))
 
-const apiRouter = require('./api')
-router.use('/api', apiRouter.routes())
+    const { router, prefix } = routerConfig
 
-const publicRouter = require('./public')
-router.use('/public', publicRouter.routes())
+    if (!router || !prefix) {
+      throw new Error('router or path prefix not found')
+    }
 
-module.exports = router
+    mainRouter.use(prefix, router.routes())
+  }
+})
+
+module.exports = mainRouter

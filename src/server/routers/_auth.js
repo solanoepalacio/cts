@@ -60,12 +60,15 @@ router.get('/status', accessMiddleware, async function (ctx) {
   ctx.body = 'authenticated'
 })
 
-module.exports = router
-
 function exposeUser (user) {
   return {
     // // WHEN the ui is ready to use many domains, change this:
     _id: user._id.toString(),
     domainId: user.domains[0]
   }
+}
+
+module.exports = {
+  router,
+  prefix: '/auth'
 }
